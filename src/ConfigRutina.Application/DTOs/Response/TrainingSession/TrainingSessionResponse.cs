@@ -10,10 +10,10 @@ namespace ConfigRutina.Application.DTOs.Response.TrainingSession
     public class TrainingSessionResponse
     {
         public Guid id { get; set; }
-        public Guid trainingPlanId { get; set; }
-        public string name { get; set; } = string.Empty;
-        public int order { get; set; }
-        public List<ExerciseSessionShortResponse> exerciseSession {get;set;}
+        public Guid idPlanEntrenamiento { get; set; }
+        public string nombre { get; set; } = string.Empty;
+        public int orden { get; set; }
+        public List<ExerciseSessionShortResponse> ejerciciosSesion {get;set;}
          
     }
 }

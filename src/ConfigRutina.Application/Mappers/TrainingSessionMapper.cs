@@ -17,13 +17,13 @@ namespace ConfigRutina.Application.Mappers
             var response = new TrainingSessionResponse
             {
                 id = sesion.Id,
-                trainingPlanId = sesion.IdPlanEntrenamiento,
-                name = sesion.Nombre,
-                order = sesion.Orden,
-                exerciseSession = sesion.EjercicioSesionLista.Select(Ejercicio => new ExerciseSessionShortResponse
+                idPlanEntrenamiento = sesion.IdPlanEntrenamiento,
+                nombre = sesion.Nombre,
+                orden = sesion.Orden,
+                ejerciciosSesion = sesion.EjercicioSesionLista.Select(Ejercicio => new ExerciseSessionShortResponse
                 {
                     id = Ejercicio.Id,
-                    idExercise = Ejercicio.EjercicioEn.Id
+                    ejercicioId = Ejercicio.EjercicioEn.Id
                 }).ToList()
             };
             return response;

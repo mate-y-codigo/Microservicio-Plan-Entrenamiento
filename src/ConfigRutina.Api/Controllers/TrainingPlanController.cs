@@ -44,7 +44,7 @@ namespace ConfigRutina.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(TrainingPlanStatusResponse), 201)]
+        [ProducesResponseType(typeof(TrainingPlanStatusResponse), 200)]
         [ProducesResponseType(typeof(ApiError), 400)]
         [ProducesResponseType(typeof(ApiError), 404)]
         [ProducesResponseType(typeof(ApiError), 409)]

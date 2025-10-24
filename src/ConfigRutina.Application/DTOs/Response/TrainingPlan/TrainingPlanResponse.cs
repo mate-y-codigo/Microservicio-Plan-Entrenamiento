@@ -16,6 +16,6 @@ namespace ConfigRutina.Application.DTOs.Response.TrainingPlan
         public DateTime fechaCreacion { get; set; }
         public DateTime fechaActualizacion { get; set; }
         public bool activo { get; set; } = false;
-        public List<TrainingSessionResponse> trainingSessions { get; set; }
+        public List<TrainingSessionResponse> sesionesEntrenamiento { get; set; }
     }
 }
