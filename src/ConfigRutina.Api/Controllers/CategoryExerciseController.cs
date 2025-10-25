@@ -16,7 +16,7 @@ namespace ConfigRutina.Api.Controllers
         }
 
         /// <summary>
-        /// Obtener categorias de ejercicios.
+        /// Obtener categorías de ejercicios
         /// </summary>
         [HttpGet]
         [ProducesResponseType(typeof(CategoryExerciseResponse), 200)]

@@ -5,6 +5,7 @@ using ConfigRutina.Application.Interfaces.ExerciseSession;
 using ConfigRutina.Application.Interfaces.TrainingPlan;
 using ConfigRutina.Application.Interfaces.TrainingSession;
 using ConfigRutina.Application.Interfaces.Validators;
+using ConfigRutina.Application.Mappers;
 using ConfigRutina.Application.Services.CategoryExercise;
 using ConfigRutina.Application.Services.Exercise;
 using ConfigRutina.Application.Services.ExerciseSession;
@@ -16,6 +17,8 @@ using ConfigRutina.Infrastructure.Commands;
 using ConfigRutina.Infrastructure.Data;
 using ConfigRutina.Infrastructure.Queries;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,11 +32,25 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod());
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Esto hace que los enums se serialicen como texto (no números)
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ConfigRutina API", Version = "v1" });
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+
+    c.UseInlineDefinitionsForEnums();
+});
 
 // custom
 var connectionString = builder.Configuration["ConnectionString"];
@@ -61,16 +78,25 @@ builder.Services.AddScoped<ICategoryExcerciseQuery<List<CategoriaEjercicio>>, Ca
 
 // training plan dependencies
 builder.Services.AddScoped<ITrainingPlanService, TrainingPlanService>();
+builder.Services.AddScoped<ITrainingPlanCommand, TrainingPlanCommand>();
+builder.Services.AddScoped<ITrainingPlanQuery, TrainingPlanQuery>();
+builder.Services.AddScoped<TrainingPlanMapper>();
+builder.Services.AddScoped<TrainingPlanValidator>();
+builder.Services.AddScoped<ITrainingPlanAggregateCommand, TrainingPlanAggregateCommand>();
 
 //training Session Dependencies
 builder.Services.AddScoped<ITrainingSessionCommand, TrainingSessionCommand>();
 builder.Services.AddScoped<ITrainingSessionQuery, TrainingSessionQuery>();
 builder.Services.AddScoped<ITrainingSessionService, TrainingSessionService>();
+builder.Services.AddScoped<TrainingSessionMapper>();
+builder.Services.AddScoped<TrainingSessionValidator>();
 
 // Excercise Session Dependencies
 builder.Services.AddScoped<IExerciseSessionCommand, ExerciseSessionCommand>();
 builder.Services.AddScoped<IExerciseSessionQuery, ExerciseSessionQuery>();
 builder.Services.AddScoped<IExerciseSessionService, ExerciseSessionService>();
+builder.Services.AddScoped<ExerciseSessionMapper>();
+builder.Services.AddScoped<ExerciseSessionValidator>();
 
 var app = builder.Build();
 

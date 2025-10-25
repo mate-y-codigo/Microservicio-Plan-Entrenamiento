@@ -9,7 +9,6 @@ namespace ConfigRutina.Application.DTOs.Response.ExerciseSession
     public class ExerciseSessionShortResponse
     {
         public Guid id { get; set; }
-        public Guid ejercicioId{ get; set; }
-
+        public Guid exerciseId { get; set; }
     }
 }

@@ -21,20 +21,21 @@ namespace ConfigRutina.Infrastructure.Queries
 
         public async Task<EjercicioSesion> GetById(Guid id)
         {
-            return _configRutinaDB.EjercicioSesiones.AsNoTracking()
-                .Where(es => es.Id == id)
+            return await _configRutinaDB.EjercicioSesiones
+                .AsNoTracking()
                 .Include(es => es.EjercicioEn)
+                    .ThenInclude(e => e.CategoriaEjercicioEn)
                 .Include(es => es.SesionEntrenamientoEn)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync(es => es.Id == id);
         }
 
         // trae todos ejercicio de entrenamiento por sesion de entrenamiento
         public async Task<List<EjercicioSesion>> GetExerciseSessionsByTrainingSession(Guid idTS)
         {
-            return _configRutinaDB.EjercicioSesiones.AsNoTracking()
+            return await _configRutinaDB.EjercicioSesiones.AsNoTracking()
                 .Include(es => es.EjercicioEn)
                 .Include(es => es.SesionEntrenamientoEn)
-                .Where(es => es.IdSesionEntrenamiento == idTS).ToList();
+                .Where(es => es.IdSesionEntrenamiento == idTS).ToListAsync();
         }
     }
 }

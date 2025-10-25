@@ -1,4 +1,5 @@
-﻿using ConfigRutina.Application.Interfaces.ExcerciseSession;
+﻿using ConfigRutina.Application.CustomExceptions;
+using ConfigRutina.Application.Interfaces.ExcerciseSession;
 using ConfigRutina.Domain.Entities;
 using ConfigRutina.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +20,29 @@ namespace ConfigRutina.Infrastructure.Commands
             _configRutinaDB = configRutinaDB;
         }
 
-        public async Task InsertExcerciseSession(EjercicioSesion es)
+        public async Task InsertExerciseSession(EjercicioSesion es)
         {
+            //meto validación de ejercicio acá para no romper el código
+            var exerciseExists = await _configRutinaDB.Ejercicios
+            .AsNoTracking()
+            .AnyAsync(e => e.Id == es.IdEjercicio);
+            if (!exerciseExists)
+            {
+                throw new NotFoundException($"El ejercicio con ID '{es.IdEjercicio}' no existe.");
+            }
+            var sessionExists = await _configRutinaDB.SesionEntrenamientos
+                .AsNoTracking()
+                .AnyAsync(s => s.Id == es.IdSesionEntrenamiento);
+            if (!sessionExists)
+            {
+                throw new NotFoundException($"La sesión de entrenamiento con ID '{es.IdSesionEntrenamiento}' no existe.");
+            }
+
             _configRutinaDB.Add(es);
             await _configRutinaDB.SaveChangesAsync();
         }
 
-        public async Task UpdateExcerciseSession(EjercicioSesion es)
+        public async Task UpdateExerciseSession(EjercicioSesion es)
         {
             await _configRutinaDB.EjercicioSesiones.Where(n => n.Id == es.Id)
                 .ExecuteUpdateAsync(setters => setters

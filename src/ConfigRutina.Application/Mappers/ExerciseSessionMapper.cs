@@ -1,4 +1,5 @@
-﻿using ConfigRutina.Application.DTOs.Response;
+﻿using ConfigRutina.Application.DTOs.Request.SessionExercise;
+using ConfigRutina.Application.DTOs.Response;
 using ConfigRutina.Application.DTOs.Response.Exercise;
 using ConfigRutina.Application.DTOs.Response.ExerciseSession;
 using ConfigRutina.Domain.Entities;
@@ -12,16 +13,16 @@ namespace ConfigRutina.Application.Mappers
 {
     public class ExerciseSessionMapper
     {
-        public static ExerciseSessionResponse ExerciseSessionToResponse(EjercicioSesion sesion) {
+        public ExerciseSessionResponse ToResponse(EjercicioSesion sesion) {
             var result = new ExerciseSessionResponse
             {
                 id = sesion.Id,
-                seriesObjetivo = sesion.SeriesObjetivo,
-                repeticionesObjetivo = sesion.RepeticionesObjetivo,
-                pesoObjetivo = sesion.PesoObjetivo,
-                descanso = sesion.Descanso,
-                orden = sesion.Orden,
-                ejercicio = new ExerciseResponse
+                targetSets = sesion.SeriesObjetivo,
+                targetReps = sesion.RepeticionesObjetivo,
+                targetWeight = sesion.PesoObjetivo,
+                rest = sesion.Descanso,
+                order = sesion.Orden,
+                exercise = new ExerciseResponse
                 {
                     id = sesion.EjercicioEn.Id,
                     nombre = sesion.EjercicioEn.Nombre,
@@ -37,8 +38,32 @@ namespace ConfigRutina.Application.Mappers
                     }
                 }
             };
-
             return result;
+        }
+
+        public EjercicioSesion ToExerciseSession(Guid trainingSessionId, SessionExerciseCreateRequest request)
+        {
+            var exerciseSession = new EjercicioSesion
+            {
+                Id = Guid.NewGuid(),
+                IdSesionEntrenamiento = trainingSessionId,
+                IdEjercicio = request.exerciseId,
+                SeriesObjetivo = request.targetSets,
+                RepeticionesObjetivo = request.targetReps,
+                PesoObjetivo = request.targetWeight,
+                Descanso = request.rest,
+                Orden = request.order
+            };
+            return exerciseSession;
+        }
+
+        public ExerciseSessionShortResponse ToShortResponse(EjercicioSesion sesion)
+        {
+            return new ExerciseSessionShortResponse
+            {
+                id = sesion.Id,
+                exerciseId = sesion.IdEjercicio
+            };
         }
     }
 }

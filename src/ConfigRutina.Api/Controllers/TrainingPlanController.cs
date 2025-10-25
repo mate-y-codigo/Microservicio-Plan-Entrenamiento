@@ -1,7 +1,8 @@
 ﻿using ConfigRutina.Application.CustomExceptions;
 using ConfigRutina.Application.DTOs.Request.TrainingPlan;
 using ConfigRutina.Application.DTOs.Response.TrainingPlan;
-using ConfigRutina.Application.Services.TrainingPlan;
+using ConfigRutina.Application.Enums;
+using ConfigRutina.Application.Interfaces.TrainingPlan;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,59 +12,38 @@ namespace ConfigRutina.Api.Controllers
     [ApiController]
     public class TrainingPlanController : ControllerBase
     {
-        private readonly TrainingPlanService _trainingPlanService;
-        public TrainingPlanController(TrainingPlanService trainingPlanService)
+        private readonly ITrainingPlanService _trainingPlanService;
+        public TrainingPlanController(ITrainingPlanService trainingPlanService)
         {
             _trainingPlanService = trainingPlanService;
         }
 
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(TrainingPlanResponse), 200)]
-        [ProducesResponseType(typeof(ApiError), 404)]
-        [ProducesResponseType(typeof(ApiError), 400)]
-
-        public async Task<IActionResult> GetTrainingPlanById(string id)
-        {
-            try
-            {
-                return new JsonResult(_trainingPlanService.GetTrainingPlanById(id));
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(new ApiError { message = ex.Message });
-            }
-
-            catch (NotFoundException ex)
-            {
-                return NotFound(new ApiError { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
-            }
-        }
-
-        [HttpPut("{id}")]
-        [ProducesResponseType(typeof(TrainingPlanStatusResponse), 200)]
+        /// <summary>
+        /// Crear plan de entrenamiento
+        /// </summary>
+        [HttpPost]
+        [ProducesResponseType(typeof(TrainingPlanResponse), 201)]
         [ProducesResponseType(typeof(ApiError), 400)]
         [ProducesResponseType(typeof(ApiError), 404)]
         [ProducesResponseType(typeof(ApiError), 409)]
-        public async Task<IActionResult> ChangeTrainingPlanStatus(string id, [FromBody] UpdateTrainingPlanStatusRequest request) {
+
+        public async Task<IActionResult> CreateTrainingPlan([FromBody] CreateTrainingPlanRequest request)
+        {
             try
             {
-                return new JsonResult(_trainingPlanService.ChangeStateTrainingPlan(id, request));
+                var result = await _trainingPlanService.CreateTrainingPlan(request);
+                return new JsonResult(result) { StatusCode = StatusCodes.Status201Created };
             }
             catch (BadRequestException ex)
             {
                 return BadRequest(new ApiError { message = ex.Message });
             }
-
             catch (NotFoundException ex)
             {
                 return NotFound(new ApiError { message = ex.Message });
             }
-
-            catch (ConflictException ex) {
+            catch (ConflictException ex)
+            {
                 return Conflict(new ApiError { message = ex.Message });
             }
 
@@ -71,18 +51,28 @@ namespace ConfigRutina.Api.Controllers
             {
                 return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
             }
-
         }
 
+        /// <summary>
+        /// Obtener planes de entrenamiento por filtros
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="IsTemplate"></param>
+        /// <param name="TrainerId"></param>
+        /// <param name="Active"></param>
+        /// <param name="From">desde</param>
+        /// <param name="To">hasta</param>
+        /// <param name="OrderBy"></param>
         [HttpGet]
         [ProducesResponseType(typeof(TrainingPlanResponse), 200)]
         [ProducesResponseType(typeof(ApiError), 400)]
 
-        public async Task<IActionResult> GetTrainingPlanFilter([FromQuery] string? Name, bool? Plantilla, string? IdEntrenador, bool? Active, DateTime? CreateDate, DateTime? UpdateDate)
+        public async Task<IActionResult> GetTrainingPlanFilter([FromQuery] string? Name, bool? IsTemplate, Guid? TrainerId, bool? Active, DateTime? From, DateTime? To, TrainingPlanOrderBy OrderBy = TrainingPlanOrderBy.createdate_desc)
         {
             try
             {
-                return new JsonResult(_trainingPlanService.GetFilterTrainingPlan(Name, Plantilla, IdEntrenador, Active, CreateDate,UpdateDate));
+                var result = await _trainingPlanService.GetFilterTrainingPlan(Name, IsTemplate, TrainerId, Active, From, To, OrderBy);
+                return new JsonResult(result) { StatusCode = StatusCodes.Status200OK };
             }
             catch (BadRequestException ex)
             {
@@ -96,34 +86,63 @@ namespace ConfigRutina.Api.Controllers
 
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(TrainingPlanResponse), 201)]
-        [ProducesResponseType(typeof(ApiError), 400)]
+        /// <summary>
+        /// Obtener plan de entrenamiento por Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(typeof(TrainingPlanResponse), 200)]
         [ProducesResponseType(typeof(ApiError), 404)]
 
-
-        //preguntar si se espera del body las sesiones o se asignan en service
-        public async Task<IActionResult> CreateTrainingPlan([FromBody] CreateTrainingPlanRequest request)
+        public async Task<IActionResult> GetTrainingPlanById([FromRoute] Guid id)
         {
             try
             {
-                return new JsonResult(_trainingPlanService.CreateTrainingPLan(request));
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(new ApiError { message = ex.Message });
+                var result = await _trainingPlanService.GetTrainingPlanById(id);
+                return new JsonResult(result) { StatusCode = StatusCodes.Status200OK };
             }
             catch (NotFoundException ex)
             {
-                return BadRequest(new ApiError { message = ex.Message });
+                return NotFound(new ApiError { message = ex.Message });
             }
-
             catch (Exception ex)
             {
                 return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
             }
-
         }
 
+        //[HttpPut("{id}")]
+        //[ProducesResponseType(typeof(TrainingPlanStatusResponse), 200)]
+        //[ProducesResponseType(typeof(ApiError), 400)]
+        //[ProducesResponseType(typeof(ApiError), 404)]
+        //[ProducesResponseType(typeof(ApiError), 409)]
+        //public async Task<IActionResult> ChangeTrainingPlanStatus(string id, [FromBody] UpdateTrainingPlanStatusRequest request)
+        //{
+        //    try
+        //    {
+        //        return new JsonResult(_trainingPlanService.ChangeStateTrainingPlan(id, request));
+        //    }
+        //    catch (BadRequestException ex)
+        //    {
+        //        return BadRequest(new ApiError { message = ex.Message });
+        //    }
+
+        //    catch (NotFoundException ex)
+        //    {
+        //        return NotFound(new ApiError { message = ex.Message });
+        //    }
+
+        //    catch (ConflictException ex)
+        //    {
+        //        return Conflict(new ApiError { message = ex.Message });
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
+        //    }
+
+        //}
     }
 }

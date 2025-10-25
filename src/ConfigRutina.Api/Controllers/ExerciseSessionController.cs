@@ -2,6 +2,7 @@
 using ConfigRutina.Application.DTOs.Response.ExerciseSession;
 using ConfigRutina.Application.Interfaces.ExerciseSession;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConfigRutina.Api.Controllers
@@ -17,29 +18,25 @@ namespace ConfigRutina.Api.Controllers
             _exerciseSessionService = exerciseSessionService;
         }
 
+        /// <summary>
+        /// Obtener sesión de ejercicio detallado por id 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ExerciseSessionResponse),200)]
         [ProducesResponseType(typeof(ApiError),404)]
-        [ProducesResponseType(typeof(ApiError),400)]
-        [ProducesResponseType(typeof(ApiError),409)]
-        public async Task<IActionResult> GetExerciseSessionsByTrainingSession(string id){
+        public async Task<IActionResult> GetExerciseSessionById([FromRoute] Guid id){
 
             try
             {
-                return new JsonResult(_exerciseSessionService.GetExcerciseSessionById(id));
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(new ApiError { message = ex.Message });
+                var result = await _exerciseSessionService.GetExerciseSessionById(id);
+                return new JsonResult(result) { StatusCode = StatusCodes.Status200OK };
             }
 
             catch (NotFoundException ex)
             {
                 return NotFound(new ApiError { message = ex.Message });
-            }
-            catch (ConflictException ex) {
-
-                return Conflict(new ApiError { message = ex.Message });
             }
             catch (Exception ex)
             {

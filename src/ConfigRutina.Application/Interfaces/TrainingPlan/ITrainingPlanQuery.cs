@@ -1,4 +1,5 @@
-﻿using ConfigRutina.Domain.Entities;
+﻿using ConfigRutina.Application.Enums;
+using ConfigRutina.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,6 @@ namespace ConfigRutina.Application.Interfaces.TrainingPlan
     public interface ITrainingPlanQuery
     {
         Task<PlanEntrenamiento> GetTrainingPlanById(Guid id);
-        Task<List<PlanEntrenamiento>> GetTrainingPLanFilter(DateTime? createDate, DateTime? updateDate, Guid? idEntrenador, string? name, bool plantilla = true, bool active = true);
-
+        Task<List<PlanEntrenamiento>> GetTrainingPlanFilter(string? name, bool? isTemplate, Guid? trainerId, bool? active, DateTime? from, DateTime? to, TrainingPlanOrderBy orderBy);
     }
 }

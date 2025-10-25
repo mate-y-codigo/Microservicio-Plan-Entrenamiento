@@ -9,7 +9,7 @@ namespace ConfigRutina.Application.Interfaces.TrainingSession
 {
     public interface ITrainingSessionCommand
     {
-        Task insertTrainingSession(SesionEntrenamiento TS);
-        Task updateTrainingSession(SesionEntrenamiento TS);
+        Task InsertTrainingSession(SesionEntrenamiento TS);
+        Task UpdateTrainingSession(SesionEntrenamiento TS);
     }
 }

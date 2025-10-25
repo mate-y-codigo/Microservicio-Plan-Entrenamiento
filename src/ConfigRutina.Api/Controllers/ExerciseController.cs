@@ -20,7 +20,7 @@ namespace ConfigRutina.Api.Controllers
         }
 
         /// <summary>
-        /// Crear nuevo ejercicio.
+        /// Crear nuevo ejercicio
         /// </summary>
         [HttpPost]
         [ProducesResponseType(typeof(ExerciseResponse), 201)]
@@ -43,7 +43,7 @@ namespace ConfigRutina.Api.Controllers
         }
 
         /// <summary>
-        /// Borrar nuevo ejercicio.
+        /// Eliminar ejercicio
         /// </summary>
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ExerciseResponse), 200)]
@@ -66,7 +66,7 @@ namespace ConfigRutina.Api.Controllers
         }
 
         /// <summary>
-        /// Actualizar ejercicio existente.
+        /// Actualizar ejercicio existente
         /// </summary>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ExerciseResponse), 200)]
@@ -94,7 +94,7 @@ namespace ConfigRutina.Api.Controllers
         }
 
         /// <summary>
-        /// Obtener categorias de ejercicios.
+        /// Obtener ejercicios por filtros
         /// </summary>
         [HttpGet]
         [ProducesResponseType(typeof(ExerciseResponse), 200)]
@@ -112,7 +112,7 @@ namespace ConfigRutina.Api.Controllers
         }
 
         /// <summary>
-        /// Obtener categorias de ejercicios.
+        /// Obtener ejercicios por id
         /// </summary>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ExerciseResponse), 200)]

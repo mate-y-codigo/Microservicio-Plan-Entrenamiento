@@ -19,13 +19,13 @@ namespace ConfigRutina.Infrastructure.Commands
             _configRutinaDB = configRutinaDB;
         }
 
-        public async Task insertTrainingSession(SesionEntrenamiento TS)
+        public async Task InsertTrainingSession(SesionEntrenamiento TS)
         {
             _configRutinaDB.Add(TS);
             await _configRutinaDB.SaveChangesAsync();
         }
 
-        public async Task updateTrainingSession(SesionEntrenamiento TS)
+        public async Task UpdateTrainingSession(SesionEntrenamiento TS)
         {
             await _configRutinaDB.SesionEntrenamientos.Where(ts => ts.Id == TS.Id)
                 .ExecuteUpdateAsync(setters => setters

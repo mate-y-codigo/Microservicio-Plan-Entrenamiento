@@ -21,20 +21,19 @@ namespace ConfigRutina.Infrastructure.Queries
 
         public async Task<SesionEntrenamiento> GetById(Guid id)
         {
-            return _configRutinaDB.SesionEntrenamientos
+            return await _configRutinaDB.SesionEntrenamientos
                 .AsNoTracking()
                 .Include(ts => ts.PlanEntrenamientoEn)
-                .Where(ts => ts.Id == id)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync(ts => ts.Id == id);
         }
 
         public async Task<List<SesionEntrenamiento>> GetTrainingSessionsByPlan(Guid idTP)
         {
-            return _configRutinaDB.SesionEntrenamientos
+            return await _configRutinaDB.SesionEntrenamientos
                 .AsNoTracking()
                 .Include(ts => ts.PlanEntrenamientoEn)
                 .Where(ts => ts.IdPlanEntrenamiento == idTP)
-                .ToList();
+                .ToListAsync();
         }
     }
 }

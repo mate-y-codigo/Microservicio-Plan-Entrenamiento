@@ -1,4 +1,5 @@
-﻿using ConfigRutina.Application.Interfaces.TrainingPlan;
+﻿using ConfigRutina.Application.CustomExceptions;
+using ConfigRutina.Application.Interfaces.TrainingPlan;
 using ConfigRutina.Domain.Entities;
 using ConfigRutina.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +20,18 @@ namespace ConfigRutina.Infrastructure.Commands
             _configRutinaDB = configRutinaDB;
         }
 
-        public async Task InsertTrainingPlan(PlanEntrenamiento TP)
+        public async Task InsertTrainingPlan(PlanEntrenamiento tp)
         {
-            _configRutinaDB.Add(TP);
+            var exists = await _configRutinaDB.PlanEntrenamientos
+            .AsNoTracking()
+            .AnyAsync(p => p.IdEntrenador == tp.IdEntrenador &&
+                           p.Nombre.ToLower() == tp.Nombre.ToLower());
+            if (exists)
+            {
+                throw new ConflictException($"Ya existe un plan con el nombre '{tp.Nombre}' para este entrenador.");
+            }
+
+            _configRutinaDB.Add(tp);
             await _configRutinaDB.SaveChangesAsync();
         }
 

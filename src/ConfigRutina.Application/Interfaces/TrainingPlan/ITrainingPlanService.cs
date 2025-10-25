@@ -1,5 +1,6 @@
 ﻿using ConfigRutina.Application.DTOs.Request.TrainingPlan;
 using ConfigRutina.Application.DTOs.Response.TrainingPlan;
+using ConfigRutina.Application.Enums;
 using ConfigRutina.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,10 @@ namespace ConfigRutina.Application.Interfaces.TrainingPlan
 {
     public interface ITrainingPlanService
     {
-        public TrainingPlanResponse CreateTrainingPLan(CreateTrainingPlanRequest request);
-        public TrainingPlanResponse UpdateTrainingPlan(); // preguntar si esta bien
-        public TrainingPlanResponse GetTrainingPlanById(string id);
+        Task<TrainingPlanResponse> CreateTrainingPlan(CreateTrainingPlanRequest request);
+        public TrainingPlanResponse UpdateTrainingPlan();
+        Task<TrainingPlanResponse> GetTrainingPlanById(Guid id);
         public TrainingPlanStatusResponse ChangeStateTrainingPlan(string id, UpdateTrainingPlanStatusRequest request);
-        public List<TrainingPlanResponse> GetFilterTrainingPlan(string? name, bool? plantilla, string? IdEntrenador, bool? active, DateTime? CreateDate,DateTime? UpdateDate);
+        Task<List<TrainingPlanResponse>> GetFilterTrainingPlan(string? name, bool? plantilla, Guid? IdEntrenador, bool? active, DateTime? from, DateTime? to, TrainingPlanOrderBy OrderBy);
     }
 }

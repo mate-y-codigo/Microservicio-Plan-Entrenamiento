@@ -1,4 +1,5 @@
-﻿using ConfigRutina.Application.DTOs.Response.ExerciseSession;
+﻿using ConfigRutina.Application.DTOs.Request.TrainingSession;
+using ConfigRutina.Application.DTOs.Response.ExerciseSession;
 using ConfigRutina.Application.DTOs.Response.TrainingSession;
 using ConfigRutina.Application.Services.TrainingSession;
 using ConfigRutina.Domain.Entities;
@@ -13,21 +14,27 @@ namespace ConfigRutina.Application.Mappers
 {
     public class TrainingSessionMapper
     {
-        public static TrainingSessionResponse TrainingSessionToResponse(SesionEntrenamiento sesion) {
+        public SesionEntrenamiento ToTrainingSession(Guid planId, TrainingSessionCreateRequest request)
+        {
+            return new SesionEntrenamiento
+            {
+                Id = Guid.NewGuid(),
+                IdPlanEntrenamiento = planId,
+                Nombre = request.name,
+                Orden = request.order
+            };
+        }
+
+        public TrainingSessionResponse ToResponse(SesionEntrenamiento session, List<ExerciseSessionShortResponse> exerciseSessions) {
             var response = new TrainingSessionResponse
             {
-                id = sesion.Id,
-                idPlanEntrenamiento = sesion.IdPlanEntrenamiento,
-                nombre = sesion.Nombre,
-                orden = sesion.Orden,
-                ejerciciosSesion = sesion.EjercicioSesionLista.Select(Ejercicio => new ExerciseSessionShortResponse
-                {
-                    id = Ejercicio.Id,
-                    ejercicioId = Ejercicio.EjercicioEn.Id
-                }).ToList()
+                id = session.Id,
+                idTrainingPlan = session.IdPlanEntrenamiento,
+                name = session.Nombre,
+                order = session.Orden,
+                exerciseSessions = exerciseSessions
             };
             return response;
-              
         }
     }
 }

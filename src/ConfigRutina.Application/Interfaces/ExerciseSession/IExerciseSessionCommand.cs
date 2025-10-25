@@ -9,8 +9,8 @@ namespace ConfigRutina.Application.Interfaces.ExcerciseSession
 {
     public interface IExerciseSessionCommand
     {
-        Task InsertExcerciseSession(EjercicioSesion es);
-        Task UpdateExcerciseSession(EjercicioSesion es);
+        Task InsertExerciseSession(EjercicioSesion es);
+        Task UpdateExerciseSession(EjercicioSesion es);
 
     }
 }
