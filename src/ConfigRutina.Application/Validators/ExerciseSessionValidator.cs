@@ -24,27 +24,27 @@ namespace ConfigRutina.Application.Validators
             {
                 throw new BadRequestException("El request no puede ser nulo.");
             }
-            if (request.exerciseId == Guid.Empty)
+            if (request.id == Guid.Empty)
             {
                 throw new BadRequestException("El id de ejercicio debe ser un id válido.");
             }
-            if (request.order <= 0)
+            if (request.orden <= 0)
             {
                 throw new BadRequestException("El orden del ejercicio sesión debe ser válido.");
             }
-            if (request.targetSets <= 0)
+            if (request.seriesObjetivo <= 0)
             {
                 throw new BadRequestException("Las series objetivo deben ser un número positivo.");
             }
-            if (request.targetReps <= 0)
+            if (request.repeticionesObjetivo <= 0)
             {
                 throw new BadRequestException("Las repeticiones objetivo deben ser un número positivo.");
             }
-            if (request.targetWeight < 0)
+            if (request.pesoObjetivo < 0)
             {
                 throw new BadRequestException("El peso objetivo no puede ser negativo.");
             }
-            if (request.rest < 0)
+            if (request.descanso < 0)
             {
                 throw new BadRequestException("El tiempo de descanso no puede ser negativo.");
             }

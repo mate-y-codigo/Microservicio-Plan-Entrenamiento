@@ -20,8 +20,8 @@ namespace ConfigRutina.Application.Mappers
             {
                 Id = Guid.NewGuid(),
                 IdPlanEntrenamiento = planId,
-                Nombre = request.name,
-                Orden = request.order
+                Nombre = request.nombre,
+                Orden = request.orden
             };
         }
 
@@ -29,10 +29,10 @@ namespace ConfigRutina.Application.Mappers
             var response = new TrainingSessionResponse
             {
                 id = session.Id,
-                idTrainingPlan = session.IdPlanEntrenamiento,
-                name = session.Nombre,
-                order = session.Orden,
-                exerciseSessions = exerciseSessions
+                planEntrenamientoId = session.IdPlanEntrenamiento,
+                nombre = session.Nombre,
+                orden = session.Orden,
+                sesionesEjercicio= exerciseSessions
             };
             return response;
         }

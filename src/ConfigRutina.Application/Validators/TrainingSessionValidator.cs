@@ -22,15 +22,15 @@ namespace ConfigRutina.Application.Validators
             {
                 throw new BadRequestException("La sesión de entrenamiento no puede ser nula.");
             }
-            if (string.IsNullOrWhiteSpace(request.name))
+            if (string.IsNullOrWhiteSpace(request.nombre))
             {
                 throw new BadRequestException("El nombre de la sesión es obligatorio.");
             }
-            if (request.name.Length > 100)
+            if (request.nombre.Length > 100)
             {
                 throw new BadRequestException("El nombre de la sesión no puede superar los 100 caracteres.");
             }
-            if (request.order <= 0)
+            if (request.orden <= 0)
             {
                 throw new BadRequestException("El orden de la sesión debe ser mayor a 0.");
             }

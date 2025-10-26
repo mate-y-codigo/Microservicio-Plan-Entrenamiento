@@ -9,8 +9,8 @@ namespace ConfigRutina.Application.DTOs.Request.TrainingSession
 {
     public class TrainingSessionCreateRequest
     {
-        public required string name { get; set; } = string.Empty;
-        public required int order { get; set; }
+        public required string nombre { get; set; } = string.Empty;
+        public required int orden { get; set; }
         public List<SessionExerciseCreateRequest> sessionExerciseCreateRequests { get; set; } = new();
     }
 }

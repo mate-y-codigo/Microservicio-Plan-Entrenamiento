@@ -8,11 +8,11 @@ namespace ConfigRutina.Application.DTOs.Request.SessionExercise
 {
     public class SessionExerciseCreateRequest
     {
-        public required Guid exerciseId { get; set; }
-        public required int targetSets { get; set; }
-        public required int targetReps { get; set; }
-        public float targetWeight { get; set; }
-        public required int rest { get; set; }
-        public required int order { get; set; }
+        public required Guid id { get; set; }
+        public required int seriesObjetivo { get; set; }
+        public required int repeticionesObjetivo { get; set; }
+        public float pesoObjetivo { get; set; }
+        public required int descanso { get; set; }
+        public required int orden { get; set; }
     }
 }

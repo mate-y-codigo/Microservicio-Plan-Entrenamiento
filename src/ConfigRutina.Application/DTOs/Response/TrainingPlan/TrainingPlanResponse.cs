@@ -10,13 +10,13 @@ namespace ConfigRutina.Application.DTOs.Response.TrainingPlan
     public class TrainingPlanResponse
     {
         public Guid id { get; set; }
-        public string name { get; set; } = string.Empty;
-        public string? description { get; set; }
-        public bool isTemplate { get; set; }
-        public Guid trainerId { get; set; }
-        public DateTime createDate { get; set; }
-        public DateTime updateDate { get; set; }
-        public bool active { get; set; } = false;
-        public List<TrainingSessionResponse> trainingSessions { get; set; } = new();
+        public string nombre { get; set; } = string.Empty;
+        public string? descripcion { get; set; }
+        public bool esPlantilla { get; set; }
+        public Guid idEntrenador { get; set; }
+        public DateTime fechaCreacion { get; set; }
+        public DateTime fechaActualizacion { get; set; }
+        public bool activo { get; set; } = false;
+        public List<TrainingSessionResponse> sesionesEntrenamiento { get; set; } = new();
     }
 }

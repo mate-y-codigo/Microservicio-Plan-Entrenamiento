@@ -38,7 +38,7 @@ namespace ConfigRutina.Application.Services.TrainingSession
             trainingSession.EjercicioSesionLista = new List<EjercicioSesion>();
             if (request.sessionExerciseCreateRequests != null)
             {
-                foreach (var se in request.sessionExerciseCreateRequests.OrderBy(e => e.order))
+                foreach (var se in request.sessionExerciseCreateRequests.OrderBy(e => e.orden))
                 {
                     var exerciseSession = await _exerciseSessionService.CreateAsync(trainingSession.Id, se);
                     trainingSession.EjercicioSesionLista.Add(exerciseSession);

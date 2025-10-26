@@ -21,15 +21,15 @@ namespace ConfigRutina.Application.Validators
             {
                 throw new BadRequestException("El request no puede ser nulo.");
             }
-            if (request.trainerId == Guid.Empty)
+            if (request.idEntrenador == Guid.Empty)
             {
                 throw new BadRequestException("El ID del entrenador no puede ser nulo.");
             }
-            if (string.IsNullOrWhiteSpace(request.name))
+            if (string.IsNullOrWhiteSpace(request.nombre))
             {
                 throw new BadRequestException("El nombre del plan de entrenamiento es obligatorio.");
             }
-            if (request.name.Length > 100)
+            if (request.nombre.Length > 100)
             {
                 throw new BadRequestException("El nombre del plan de entrenamiento no puede superar los 100 caracteres.");
             }

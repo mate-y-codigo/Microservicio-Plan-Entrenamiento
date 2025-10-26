@@ -17,10 +17,10 @@ namespace ConfigRutina.Application.Mappers
             return new PlanEntrenamiento
             {
                 Id = Guid.NewGuid(),
-                IdEntrenador = request.trainerId,
-                Nombre = request.name,
-                Descripcion = request.description,
-                EsPlantilla = request.isTemplate,
+                IdEntrenador = request.idEntrenador,
+                Nombre = request.nombre,
+                Descripcion = request.descripcion,
+                EsPlantilla = request.esPlantilla,
                 Activo = true,
                 FechaCreacion = DateTime.UtcNow,
                 FechaActualizacion = DateTime.UtcNow
@@ -32,14 +32,14 @@ namespace ConfigRutina.Application.Mappers
             return new TrainingPlanResponse
             {
                 id = plan.Id,
-                name = plan.Nombre,
-                description = plan.Descripcion,
-                isTemplate = plan.EsPlantilla,
-                trainerId = plan.IdEntrenador,
-                createDate = plan.FechaCreacion,
-                updateDate = plan.FechaActualizacion,
-                active = plan.Activo,
-                trainingSessions = sessions.OrderBy(s => s.order).ToList()
+                nombre = plan.Nombre,
+                descripcion = plan.Descripcion,
+                esPlantilla = plan.EsPlantilla,
+                idEntrenador = plan.IdEntrenador,
+                fechaCreacion = plan.FechaCreacion,
+                fechaActualizacion = plan.FechaActualizacion,
+                activo = plan.Activo,
+                sesionesEntrenamiento = sessions.OrderBy(s => s.orden).ToList()
             };
         }
     }

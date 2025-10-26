@@ -17,12 +17,12 @@ namespace ConfigRutina.Application.Mappers
             var result = new ExerciseSessionResponse
             {
                 id = sesion.Id,
-                targetSets = sesion.SeriesObjetivo,
-                targetReps = sesion.RepeticionesObjetivo,
-                targetWeight = sesion.PesoObjetivo,
-                rest = sesion.Descanso,
-                order = sesion.Orden,
-                exercise = new ExerciseResponse
+                seriesObjetivo = sesion.SeriesObjetivo,
+                repeticionesObjetivo = sesion.RepeticionesObjetivo,
+                pesoObjetivo = sesion.PesoObjetivo,
+                descanso = sesion.Descanso,
+                orden = sesion.Orden,
+                ejercicio = new ExerciseResponse
                 {
                     id = sesion.EjercicioEn.Id,
                     nombre = sesion.EjercicioEn.Nombre,
@@ -34,7 +34,6 @@ namespace ConfigRutina.Application.Mappers
                     {
                         id = sesion.EjercicioEn.CategoriaEjercicioEn.Id,
                         nombre = sesion.EjercicioEn.CategoriaEjercicioEn.Nombre,
-
                     }
                 }
             };
@@ -47,12 +46,12 @@ namespace ConfigRutina.Application.Mappers
             {
                 Id = Guid.NewGuid(),
                 IdSesionEntrenamiento = trainingSessionId,
-                IdEjercicio = request.exerciseId,
-                SeriesObjetivo = request.targetSets,
-                RepeticionesObjetivo = request.targetReps,
-                PesoObjetivo = request.targetWeight,
-                Descanso = request.rest,
-                Orden = request.order
+                IdEjercicio = request.id,
+                SeriesObjetivo = request.seriesObjetivo,
+                RepeticionesObjetivo = request.repeticionesObjetivo,
+                PesoObjetivo = request.pesoObjetivo,
+                Descanso = request.descanso,
+                Orden = request.orden
             };
             return exerciseSession;
         }
@@ -62,7 +61,7 @@ namespace ConfigRutina.Application.Mappers
             return new ExerciseSessionShortResponse
             {
                 id = sesion.Id,
-                exerciseId = sesion.IdEjercicio
+                idEntrenador = sesion.IdEjercicio
             };
         }
     }
