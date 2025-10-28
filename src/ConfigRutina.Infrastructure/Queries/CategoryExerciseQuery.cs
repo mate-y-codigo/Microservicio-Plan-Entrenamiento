@@ -14,9 +14,14 @@ namespace ConfigRutina.Infrastructure.Queries
     {
         private readonly ConfigRutinaDB _configRutina;
 
-        public CategoryExerciseQuery(ConfigRutinaDB configRutinaDB)
+        public CategoryExerciseQuery(ConfigRutinaDB configRutina)
         {
-            _configRutina = configRutinaDB;
+            _configRutina = configRutina ?? throw new ArgumentNullException(nameof(configRutina));            
+        }
+
+        public async Task<int> GetCount()
+        {
+            return await _configRutina.CategoriaEjercicios.CountAsync();
         }
 
         public async Task<List<CategoriaEjercicio>> GetAll()

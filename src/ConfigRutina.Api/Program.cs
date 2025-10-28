@@ -1,7 +1,10 @@
+using ConfigRutina.Application.DTOs.Response.Muscle;
 using ConfigRutina.Application.Interfaces.CategoryExcercise;
 using ConfigRutina.Application.Interfaces.Excercise;
 using ConfigRutina.Application.Interfaces.ExcerciseSession;
 using ConfigRutina.Application.Interfaces.ExerciseSession;
+using ConfigRutina.Application.Interfaces.Muscle;
+using ConfigRutina.Application.Interfaces.MuscleGroup;
 using ConfigRutina.Application.Interfaces.TrainingPlan;
 using ConfigRutina.Application.Interfaces.TrainingSession;
 using ConfigRutina.Application.Interfaces.Validators;
@@ -9,6 +12,8 @@ using ConfigRutina.Application.Mappers;
 using ConfigRutina.Application.Services.CategoryExercise;
 using ConfigRutina.Application.Services.Exercise;
 using ConfigRutina.Application.Services.ExerciseSession;
+using ConfigRutina.Application.Services.Muscle;
+using ConfigRutina.Application.Services.MuscleGroup;
 using ConfigRutina.Application.Services.TrainingPlan;
 using ConfigRutina.Application.Services.TrainingSession;
 using ConfigRutina.Application.Validators;
@@ -66,6 +71,8 @@ builder.Services.AddTransient<IValidateExerciseUpdateRequest, ValidateExerciseUp
 builder.Services.AddTransient<IValidatorExerciseSearchRequest, ValidatorExerciseSearchRequest>();
 builder.Services.AddTransient<IValidatorExerciseSearchByIdRequest, ValidatorExerciseSearchByIdRequest>();
 
+builder.Services.AddTransient<IValidatorMuscleSearchRequest, ValidatorMuscleSearchRequest>();
+
 // a single instance for the entire application.
 builder.Services.AddScoped<IExcerciseQueryService, ExerciseQueryService>();
 builder.Services.AddScoped<IExcerciseQuery<Ejercicio>, ExerciseQuery>();
@@ -75,6 +82,12 @@ builder.Services.AddScoped<IExcerciseCommand, ExerciseCommand>();
 
 builder.Services.AddScoped<ICategoryExcerciseQueryService, CategoryExerciseQueryService>();
 builder.Services.AddScoped<ICategoryExcerciseQuery<List<CategoriaEjercicio>>, CategoryExerciseQuery>();
+
+builder.Services.AddScoped<IMuscleGroupQueryService, MuscleGroupQueryService>();
+builder.Services.AddScoped<IMuscleGroupQuery<List<GrupoMuscular>>, MuscleGroupQuery>();
+
+builder.Services.AddScoped<IMuscleQueryService, MuscleQueryService>();
+builder.Services.AddScoped<IMuscleQuery<Musculo>, MuscleQuery>();
 
 // training plan dependencies
 builder.Services.AddScoped<ITrainingPlanService, TrainingPlanService>();

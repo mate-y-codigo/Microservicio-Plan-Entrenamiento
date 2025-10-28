@@ -9,7 +9,7 @@ namespace ConfigRutina.Application.Interfaces.Excercise
 {
     public interface IExcerciseQueryService
     {
-        Task<List<ExerciseResponse>> Search(string name, string mainMuscle, string muscleGroup, int category, bool active);
+        Task<List<ExerciseResponse>> Search(string? name, int muscle, int category, bool active);
         Task<ExerciseResponse> SearchById(string strId);
     }
 }

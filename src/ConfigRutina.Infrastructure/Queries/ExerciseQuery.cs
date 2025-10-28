@@ -18,34 +18,35 @@ namespace ConfigRutina.Infrastructure.Queries
         {
             _configRutinaDB = configRutinaDB;
         }
-
+        
         public async Task<Ejercicio?> GetById(Guid id)
         {
             return await _configRutinaDB.Ejercicios
                 .AsNoTracking()
-                .Include(ce => ce.CategoriaEjercicioEn)
+                .Include(e => e.CategoriaEjercicioEn)
+                .Include(e => e.MusculoEn)
+                .Include(e => e.MusculoEn!.GrupoMuscularEn)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task<List<Ejercicio>> GetByFilter(string name, string mainMuscle, string muscleGroup, int category, bool active)
+        public async Task<List<Ejercicio>?> GetByFilter(string? name, int idMuscle, int idCategory, bool active)
         {
             var query = _configRutinaDB.Ejercicios
                 .AsNoTracking()
-                .Include(ce => ce.CategoriaEjercicioEn)
+                .Include(e => e.CategoriaEjercicioEn)
+                .Include(e => e.MusculoEn)
+                .Include(e => e.MusculoEn!.GrupoMuscularEn)
                 .AsQueryable();
 
             // filters
             if (!string.IsNullOrEmpty(name))
                 query = query.Where(e => e.Nombre.ToLower().Contains(name.Trim().ToLower()));
 
-            if (!string.IsNullOrEmpty(mainMuscle))
-                query = query.Where(e => e.MusculoPrincipal.ToLower().Contains(mainMuscle.Trim().ToLower()));
+            if (idMuscle > 0)
+                query = query.Where(e => e.MusculoEn!.Id == idMuscle);
 
-            if (!string.IsNullOrEmpty(muscleGroup))
-                query = query.Where(e => e.GrupoMuscular.ToLower().Contains(muscleGroup.Trim().ToLower()));
-
-            if (category > 0)
-                query = query.Where(e => e.IdCategoriaEjercicio == category);
+            if (idCategory > 0)
+                query = query.Where(e => e.CategoriaEjercicioEn!.Id == idCategory);
 
             query = query.Where(e => e.Activo == active);
 

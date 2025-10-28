@@ -5,9 +5,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace ConfigRutina.Application.DTOs.Response
+namespace ConfigRutina.Application.DTOs.Response.MuscleGroup
 {
-    public class CategoryExerciseResponse
+    public class MuscleGroupResponse
     {
         [JsonPropertyName("id")]
         public int id { get; set; }

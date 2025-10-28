@@ -28,13 +28,13 @@ namespace ConfigRutina.Application.Services.Exercise
             _validatorExerciseSearchByIdRequest = validatorExerciseSearchByIdRequest;
         }
 
-        public async Task<List<ExerciseResponse>> Search(string name, string mainMuscle, string muscleGroup, int category, bool active)
+        public async Task<List<ExerciseResponse>> Search(string? name, int muscle, int category, bool active)
         {
-            await _validatorExerciseSearchRequest.Validate(name, mainMuscle, muscleGroup, category);
-            List<Ejercicio> result = await _excerciseQuery.GetByFilter(name, mainMuscle, muscleGroup, category, active);
+            await _validatorExerciseSearchRequest.Validate(name, muscle, category);
+            List<Ejercicio>? result = await _excerciseQuery.GetByFilter(name, muscle, category, active);
             List<ExerciseResponse> exerciseResponses = new List<ExerciseResponse>();
 
-            if (result.Count > 0)
+            if (result != null && result.Count > 0)
             {
                 foreach (var e in result)
                     exerciseResponses.Add(ExerciseMapper.ToExerciseResponse(e));

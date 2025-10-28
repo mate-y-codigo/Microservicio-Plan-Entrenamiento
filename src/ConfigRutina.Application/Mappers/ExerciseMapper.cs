@@ -1,6 +1,8 @@
 ﻿using ConfigRutina.Application.DTOs.Request.Exercise;
-using ConfigRutina.Application.DTOs.Response;
+using ConfigRutina.Application.DTOs.Response.CategoryExercise;
 using ConfigRutina.Application.DTOs.Response.Exercise;
+using ConfigRutina.Application.DTOs.Response.Muscle;
+using ConfigRutina.Application.DTOs.Response.MuscleGroup;
 using ConfigRutina.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,8 +20,7 @@ namespace ConfigRutina.Application.Mappers
             return new Ejercicio()
             {
                 Nombre = resquest.nombre.Trim(),
-                MusculoPrincipal = resquest.musculoPrincipal.Trim(),
-                GrupoMuscular = resquest.grupoMuscular.Trim(),
+                IdMusculo = resquest.musculo,
                 UrlDemo = resquest.urlDemo.Trim(),
                 IdCategoriaEjercicio = resquest.categoriaEjercicio,
                 Activo = true,
@@ -32,8 +33,7 @@ namespace ConfigRutina.Application.Mappers
             {
                 Id = Guid.Parse(id),
                 Nombre = resquest.nombre.Trim(),
-                MusculoPrincipal = resquest.musculoPrincipal.Trim(),
-                GrupoMuscular = resquest.grupoMuscular.Trim(),
+                IdMusculo = resquest.musculo,
                 UrlDemo = resquest.urlDemo.Trim(),
                 IdCategoriaEjercicio = resquest.categoriaEjercicio,
                 Activo = resquest.activo,
@@ -42,12 +42,29 @@ namespace ConfigRutina.Application.Mappers
 
         public static ExerciseResponse ToExerciseResponse(Ejercicio ejercicio)
         {
+            MuscleGroupResponse grupoMuscularResponse = new MuscleGroupResponse();
+
+            if (ejercicio.MusculoEn?.GrupoMuscularEn != null)
+            {
+                grupoMuscularResponse = new MuscleGroupResponse
+                {
+                    id = ejercicio.MusculoEn.GrupoMuscularEn.Id,
+                    nombre = ejercicio.MusculoEn.GrupoMuscularEn.Nombre
+                };
+            }
+
             return new ExerciseResponse()
             {
                 id = ejercicio.Id,
                 nombre = ejercicio.Nombre,
-                musculoPrincipal = ejercicio.MusculoPrincipal,
-                grupoMuscular = ejercicio.GrupoMuscular,
+                musculo = ejercicio.MusculoEn != null ?
+                new MuscleResponse
+                {
+                    id = ejercicio.MusculoEn.Id,
+                    nombre = ejercicio.MusculoEn.Nombre,
+                    grupoMuscular = grupoMuscularResponse,
+                }
+                : null,
                 urlDemo = ejercicio.UrlDemo != null ? ejercicio.UrlDemo : "",
                 activo = ejercicio.Activo,
                 categoria = ejercicio.CategoriaEjercicioEn != null ?

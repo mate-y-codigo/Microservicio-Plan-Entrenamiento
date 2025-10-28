@@ -1,4 +1,4 @@
-﻿using ConfigRutina.Application.DTOs.Response;
+﻿using ConfigRutina.Application.DTOs.Response.CategoryExercise;
 using ConfigRutina.Application.Interfaces.CategoryExcercise;
 using ConfigRutina.Application.Mappers;
 using ConfigRutina.Domain.Entities;

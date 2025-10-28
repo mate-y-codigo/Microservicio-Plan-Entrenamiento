@@ -48,8 +48,7 @@ namespace ConfigRutina.Infrastructure.Commands
            .Where(d => d.Id == exercise.Id)
            .ExecuteUpdateAsync(setters => setters
                .SetProperty(e => e.Nombre, e => exercise.Nombre)
-               .SetProperty(e => e.MusculoPrincipal, e => exercise.MusculoPrincipal)
-               .SetProperty(e => e.GrupoMuscular, e => exercise.GrupoMuscular)
+               .SetProperty(e => e.IdMusculo, e => exercise.IdMusculo)
                .SetProperty(e => e.IdCategoriaEjercicio, e => exercise.IdCategoriaEjercicio)
                .SetProperty(e => e.UrlDemo, e => exercise.UrlDemo)
                .SetProperty(e => e.Activo, e => exercise.Activo));

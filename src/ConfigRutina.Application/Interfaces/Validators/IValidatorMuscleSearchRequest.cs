@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ConfigRutina.Application.Interfaces.Validators
 {
-    public interface IValidatorExerciseSearchRequest
+    public interface IValidatorMuscleSearchRequest
     {
-        Task Validate(string? name, int muscle, int category);
+        void Validate(int idMuscle, int idMuscleGroup, string? muscle, string? muscleGroup);
     }
 }

@@ -99,11 +99,11 @@ namespace ConfigRutina.Api.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ExerciseResponse), 200)]
         [ProducesResponseType(typeof(ApiError), 400)]
-        public async Task<IActionResult> Search([FromQuery] string? name, [FromQuery] string? mainMuscle, [FromQuery] string? muscleGroup, [FromQuery] int category, [FromQuery] bool onlyActive = true)
+        public async Task<IActionResult> Search([FromQuery] string? nombre, [FromQuery] int idMusculo, [FromQuery] int idCategoria, [FromQuery] bool Activo = true)
         {
             try
             {
-                return new JsonResult(await _excerciseQueryService.Search(name!, mainMuscle!, muscleGroup!, category, onlyActive)) { StatusCode = 200 };
+                return new JsonResult(await _excerciseQueryService.Search(nombre, idMusculo, idCategoria, Activo)) { StatusCode = 200 };
             }
             catch (BadRequestException ex)
             {

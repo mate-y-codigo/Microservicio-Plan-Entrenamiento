@@ -9,7 +9,7 @@ namespace ConfigRutina.Application.Interfaces.Excercise
     public interface IExcerciseQuery<T>
     {
         Task<T?> GetById(Guid id);
-        Task<List<T>> GetByFilter(string name, string mainMuscle, string muscleGroup, int category, bool active);
+        Task<List<T>?> GetByFilter(string? name, int idMuscle, int idCategory, bool active);
         Task<bool> ExistsById(Guid id);
         Task<bool> ExistsByName(string name);
     }

@@ -9,6 +9,7 @@ namespace ConfigRutina.Application.Interfaces.CategoryExcercise
 {
     public interface ICategoryExcerciseQuery<T>
     {
+        Task<int> GetCount();
         Task<T> GetAll();
     }
 }

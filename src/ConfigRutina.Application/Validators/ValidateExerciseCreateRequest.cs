@@ -2,6 +2,7 @@
 using ConfigRutina.Application.DTOs.Request.Exercise;
 using ConfigRutina.Application.Interfaces.CategoryExcercise;
 using ConfigRutina.Application.Interfaces.Excercise;
+using ConfigRutina.Application.Interfaces.Muscle;
 using ConfigRutina.Application.Interfaces.Validators;
 using ConfigRutina.Domain.Entities;
 using System;
@@ -16,13 +17,16 @@ namespace ConfigRutina.Application.Validators
     {
         private readonly IExcerciseQuery<Ejercicio> _exerciseQuery;
         private readonly ICategoryExcerciseQuery<List<CategoriaEjercicio>> _categoryExcerciseQuery;
+        private readonly IMuscleQuery<Musculo> _muscleQuery;
 
         public ValidatorExerciseCreateRequest(
             IExcerciseQuery<Ejercicio> exerciseQuery,
-            ICategoryExcerciseQuery<List<CategoriaEjercicio>> categoryExcerciseQuery)
+            ICategoryExcerciseQuery<List<CategoriaEjercicio>> categoryExcerciseQuery,
+            IMuscleQuery<Musculo> muscleQuery)
         {
-            _exerciseQuery = exerciseQuery;
-            _categoryExcerciseQuery = categoryExcerciseQuery;
+            _exerciseQuery = exerciseQuery ?? throw new ArgumentNullException(nameof(exerciseQuery));
+            _muscleQuery = muscleQuery ?? throw new ArgumentNullException(nameof(muscleQuery));
+            _categoryExcerciseQuery = categoryExcerciseQuery ?? throw new ArgumentNullException(nameof(categoryExcerciseQuery));
         }
 
         public async Task Validate(ExerciseCreateRequest er)
@@ -39,23 +43,12 @@ namespace ConfigRutina.Application.Validators
             if (await _exerciseQuery.ExistsByName(er.nombre))
                 throw new ConflictException(ExceptionMessage.ExerciseNameExist);
 
-            // main muscle
-            if (string.IsNullOrWhiteSpace(er.musculoPrincipal))
-                throw new BadRequestException(ExceptionMessage.ExerciseMainMuscleRequired);
-
-            if (er.musculoPrincipal.Length > 50)
-                throw new BadRequestException(ExceptionMessage.ExerciseMainMuscleLength);
-
-            // muscle Group
-            if (string.IsNullOrWhiteSpace(er.grupoMuscular))
-                throw new BadRequestException(ExceptionMessage.ExerciseMuscleGroupRequired);
-
-            if (er.grupoMuscular.Length > 50)
-                throw new BadRequestException(ExceptionMessage.ExerciseMuscleGroupLength);
-
+            // muscle
+            if (er.musculo < 1 || (er.musculo > (await _muscleQuery.GetCount())))
+                throw new BadRequestException(ExceptionMessage.MuscleInvalid);
 
             // category
-            if (er.categoriaEjercicio < 1 || (er.categoriaEjercicio > (await _categoryExcerciseQuery.GetAll()).Count))
+            if (er.categoriaEjercicio < 1 || (er.categoriaEjercicio > (await _categoryExcerciseQuery.GetCount())))
                 throw new BadRequestException(ExceptionMessage.ExerciseCategoryInvalid);
 
             // url

@@ -1,4 +1,4 @@
-﻿using ConfigRutina.Application.DTOs.Response;
+﻿using ConfigRutina.Application.DTOs.Response.CategoryExercise;
 using ConfigRutina.Application.Interfaces.CategoryExcercise;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +28,5 @@ namespace ConfigRutina.Api.Controllers
             else
                 return new JsonResult(result) { StatusCode = 200 };
         }
-
     }
 }

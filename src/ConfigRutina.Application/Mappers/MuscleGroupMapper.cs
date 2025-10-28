@@ -1,4 +1,5 @@
 ﻿using ConfigRutina.Application.DTOs.Response.CategoryExercise;
+using ConfigRutina.Application.DTOs.Response.MuscleGroup;
 using ConfigRutina.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace ConfigRutina.Application.Mappers
 {
-    public static class CategoryExerciseMapper
+    public static class MuscleGroupMapper
     {
-        public static CategoryExerciseResponse ToCategoryExerciseResponse(CategoriaEjercicio ce)
+        public static MuscleGroupResponse ToMuscleGroupResponse(GrupoMuscular gm)
         {
-            return new CategoryExerciseResponse()
+            return new MuscleGroupResponse()
             {
-                id = ce.Id,
-                nombre = ce.Nombre,
+                id = gm.Id,
+                nombre = gm.Nombre,
             };
         }
     }

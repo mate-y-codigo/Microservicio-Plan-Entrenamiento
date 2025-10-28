@@ -1,5 +1,6 @@
 ﻿using ConfigRutina.Application.CustomExceptions;
 using ConfigRutina.Application.Interfaces.CategoryExcercise;
+using ConfigRutina.Application.Interfaces.Muscle;
 using ConfigRutina.Application.Interfaces.Validators;
 using ConfigRutina.Domain.Entities;
 using System;
@@ -13,28 +14,29 @@ namespace ConfigRutina.Application.Validators
     public class ValidatorExerciseSearchRequest : IValidatorExerciseSearchRequest
     {
         private readonly ICategoryExcerciseQuery<List<CategoriaEjercicio>> _categoryExcerciseQuery;
+        private readonly IMuscleQuery<Musculo> _muscleQuery;
 
-        public ValidatorExerciseSearchRequest(ICategoryExcerciseQuery<List<CategoriaEjercicio>> categoryExcerciseQuery)
+        public ValidatorExerciseSearchRequest(
+            ICategoryExcerciseQuery<List<CategoriaEjercicio>> categoryExcerciseQuery,
+            IMuscleQuery<Musculo> muscleQuery)
         {
-            _categoryExcerciseQuery = categoryExcerciseQuery;
+            _categoryExcerciseQuery = categoryExcerciseQuery ?? throw new ArgumentNullException(nameof(categoryExcerciseQuery));
+            _muscleQuery = muscleQuery ?? throw new ArgumentNullException(nameof(muscleQuery));
         }
 
-        public async Task Validate(string name, string mainMuscle, string muscleGroup, int category)
+        public async Task Validate(string? name, int muscle, int category)
         {
             // name
             if (name != null && name.Length > 100)
                 throw new BadRequestException(ExceptionMessage.ExerciseNameLength);
 
-            // main muscle
-            if (mainMuscle != null && mainMuscle.Length > 50)
-                throw new BadRequestException(ExceptionMessage.ExerciseMainMuscleLength);
-
-            // group muscle
-            if (muscleGroup != null && muscleGroup.Length > 50)
-                throw new BadRequestException(ExceptionMessage.ExerciseMuscleGroupLength);
+            // muscle
+            Console.WriteLine(await _muscleQuery.GetCount());
+            if ((muscle > 0) && (muscle < 1 || (muscle > (await _muscleQuery.GetCount()))))
+                throw new BadRequestException(ExceptionMessage.ExerciseCategoryInvalid);
 
             // category
-            if ((category > 0) && (category < 1 || (category > (await _categoryExcerciseQuery.GetAll()).Count)))
+            if ((category > 0) && (category < 1 || (category > (await _categoryExcerciseQuery.GetCount()))))
                 throw new BadRequestException(ExceptionMessage.ExerciseCategoryInvalid);
         }
     }

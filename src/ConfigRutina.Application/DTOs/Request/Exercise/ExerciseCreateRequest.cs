@@ -13,11 +13,8 @@ namespace ConfigRutina.Application.DTOs.Request.Exercise
         [JsonPropertyName("nombre")]
         public required string nombre { get; set; } = string.Empty;
 
-        [JsonPropertyName("musculoPrincipal")]
-        public required string musculoPrincipal { get; set; } = string.Empty;
-
-        [JsonPropertyName("grupoMuscular")]
-        public required string grupoMuscular { get; set; } = string.Empty;
+        [JsonPropertyName("musculo")]
+        public required int musculo { get; set; }
 
         [JsonPropertyName("urlDemo")]
         public string urlDemo { get; set; } = string.Empty;
