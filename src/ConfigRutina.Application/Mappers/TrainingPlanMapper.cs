@@ -42,5 +42,16 @@ namespace ConfigRutina.Application.Mappers
                 sesionesEntrenamiento = sessions.OrderBy(s => s.orden).ToList()
             };
         }
+
+        public TrainingPlanStatusResponse ToStatusResponse(PlanEntrenamiento plan)
+        {
+            return new TrainingPlanStatusResponse
+            {
+                id = plan.Id,
+                nombre = plan.Nombre,
+                fechaActualizacion = plan.FechaActualizacion,
+                activo = plan.Activo
+            };
+        }
     }
 }

@@ -73,6 +73,8 @@ builder.Services.AddTransient<IValidatorExerciseSearchByIdRequest, ValidatorExer
 
 builder.Services.AddTransient<IValidatorMuscleSearchRequest, ValidatorMuscleSearchRequest>();
 
+builder.Services.AddTransient<IValidatorTrainingPlanPatchStatusRequest, ValidatorTrainingPlanPatchStatusRequest>();
+
 // a single instance for the entire application.
 builder.Services.AddScoped<IExcerciseQueryService, ExerciseQueryService>();
 builder.Services.AddScoped<IExcerciseQuery<Ejercicio>, ExerciseQuery>();

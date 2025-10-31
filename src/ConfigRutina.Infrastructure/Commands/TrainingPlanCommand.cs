@@ -46,7 +46,18 @@ namespace ConfigRutina.Infrastructure.Commands
                 .SetProperty(pe => pe.Activo, TP.Activo)
                 .SetProperty(pe => pe.FechaActualizacion, TP.FechaActualizacion)
                 );
-            await _configRutinaDB .SaveChangesAsync();
+            await _configRutinaDB.SaveChangesAsync();
+        }
+
+        public async Task UpdateStatusTrainingPlan(Guid id, bool status)
+        {
+            await _configRutinaDB.PlanEntrenamientos
+                .Where(pe => pe.Id == id)
+                .ExecuteUpdateAsync(setters => setters
+                .SetProperty(pe => pe.Activo, status)
+                .SetProperty(pe => pe.FechaActualizacion, DateTime.UtcNow)
+                );
+            await _configRutinaDB.SaveChangesAsync();
         }
     }
 }

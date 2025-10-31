@@ -20,6 +20,15 @@ namespace ConfigRutina.Infrastructure.Queries
             _configRutinaDB = configRutinaDB;
         }
 
+        public async Task<bool> ExistsTrainingPlan(Guid id)
+        {
+            var result = await _configRutinaDB.PlanEntrenamientos
+                .Where(pe => pe.Id == id)
+                .CountAsync();
+
+            return result > 0;
+        }
+
         public async Task<PlanEntrenamiento> GetTrainingPlanById(Guid id)
         {
             return await _configRutinaDB.PlanEntrenamientos
@@ -94,7 +103,7 @@ namespace ConfigRutina.Infrastructure.Queries
                 default:
                     query = query.OrderByDescending(pe => pe.FechaCreacion);
                     break;
-                }
+            }
 
             return await query.ToListAsync();
         }

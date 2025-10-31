@@ -17,5 +17,6 @@ namespace ConfigRutina.Application.Interfaces.TrainingPlan
         Task<TrainingPlanResponse> GetTrainingPlanById(Guid id);
         public TrainingPlanStatusResponse ChangeStateTrainingPlan(string id, UpdateTrainingPlanStatusRequest request);
         Task<List<TrainingPlanResponse>> GetFilterTrainingPlan(string? name, bool? plantilla, Guid? IdEntrenador, bool? active, DateTime? from, DateTime? to, TrainingPlanOrderBy OrderBy);
+        Task<TrainingPlanStatusResponse> SetStatus(string? strId, bool status);
     }
 }

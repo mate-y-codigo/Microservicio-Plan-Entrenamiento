@@ -1,10 +1,13 @@
 ﻿using ConfigRutina.Application.CustomExceptions;
+using ConfigRutina.Application.DTOs.Request.Exercise;
 using ConfigRutina.Application.DTOs.Request.TrainingPlan;
+using ConfigRutina.Application.DTOs.Response.Exercise;
 using ConfigRutina.Application.DTOs.Response.TrainingPlan;
 using ConfigRutina.Application.Enums;
 using ConfigRutina.Application.Interfaces.TrainingPlan;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ConfigRutina.Api.Controllers
 {
@@ -109,6 +112,32 @@ namespace ConfigRutina.Api.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Modificar el estado plan de entrenamiento
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(TrainingPlanResponse), 200)]
+        [ProducesResponseType(typeof(ApiError), 400)]
+        [ProducesResponseType(typeof(ApiError), 404)]
+        public async Task<IActionResult> SetStatusTrainingPlan(string? id, bool status)
+        {
+            try
+            {
+                return new JsonResult(await _trainingPlanService.SetStatus(id, status)) { StatusCode = 200 };
+            }
+            catch (BadRequestException ex)
+            {
+                return new JsonResult(new ApiError { message = ex.Message }) { StatusCode = ex.Status };
+            }
+            catch (NotFoundException ex)
+            {
+                return new JsonResult(new ApiError { message = ex.Message }) { StatusCode = ex.Status };
             }
         }
 

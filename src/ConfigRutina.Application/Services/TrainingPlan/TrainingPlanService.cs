@@ -3,13 +3,14 @@ using ConfigRutina.Application.DTOs.Request.TrainingPlan;
 using ConfigRutina.Application.DTOs.Response.ExerciseSession;
 using ConfigRutina.Application.DTOs.Response.TrainingPlan;
 using ConfigRutina.Application.DTOs.Response.TrainingSession;
+using ConfigRutina.Application.Enums;
+using ConfigRutina.Application.Interfaces.Excercise;
 using ConfigRutina.Application.Interfaces.ExcerciseSession;
 using ConfigRutina.Application.Interfaces.TrainingPlan;
 using ConfigRutina.Application.Interfaces.TrainingSession;
 using ConfigRutina.Application.Interfaces.Validators;
 using ConfigRutina.Application.Mappers;
 using ConfigRutina.Application.Validators;
-using ConfigRutina.Application.Enums;
 using ConfigRutina.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -33,8 +34,22 @@ namespace ConfigRutina.Application.Services.TrainingPlan
         private readonly ITrainingPlanAggregateCommand _aggregateCommand;
         private readonly ITrainingSessionQuery _trainingSessionQuery;
         private readonly IExerciseSessionQuery _exerciseSessionQuery;
+        private readonly IValidatorTrainingPlanPatchStatusRequest _validatortrainingPlanPatchStatusRequest;
 
-        public TrainingPlanService(ITrainingPlanCommand command, ITrainingPlanQuery query, TrainingPlanMapper mapper, TrainingPlanValidator validator, ITrainingSessionService trainingSessionService, TrainingSessionMapper trainingSessionMapper, ExerciseSessionMapper exerciseSessionMapper, TrainingSessionValidator trainingSessionValidator, ExerciseSessionValidator exerciseSessionValidator, ITrainingPlanAggregateCommand aggregateCommand, ITrainingSessionQuery trainingSessionQuery, IExerciseSessionQuery exerciseSessionQuery)
+        public TrainingPlanService(
+            ITrainingPlanCommand command,
+            ITrainingPlanQuery query,
+            TrainingPlanMapper mapper,
+            TrainingPlanValidator validator,
+            ITrainingSessionService trainingSessionService,
+            TrainingSessionMapper trainingSessionMapper,
+            ExerciseSessionMapper exerciseSessionMapper,
+            TrainingSessionValidator trainingSessionValidator,
+            ExerciseSessionValidator exerciseSessionValidator,
+            ITrainingPlanAggregateCommand aggregateCommand,
+            ITrainingSessionQuery trainingSessionQuery,
+            IExerciseSessionQuery exerciseSessionQuery,
+            IValidatorTrainingPlanPatchStatusRequest validatortrainingPlanPatchStatusRequest)
         {
             _command = command;
             _query = query;
@@ -48,6 +63,7 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             _aggregateCommand = aggregateCommand;
             _trainingSessionQuery = trainingSessionQuery;
             _exerciseSessionQuery = exerciseSessionQuery;
+            _validatortrainingPlanPatchStatusRequest = validatortrainingPlanPatchStatusRequest;
         }
 
         public async Task<TrainingPlanResponse> CreateTrainingPlan(CreateTrainingPlanRequest request)
@@ -105,7 +121,7 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             return _mapper.ToResponse(plan, sessionResponses);
         }
 
-        public TrainingPlanStatusResponse ChangeStateTrainingPlan(string id,UpdateTrainingPlanStatusRequest request)
+        public TrainingPlanStatusResponse ChangeStateTrainingPlan(string id, UpdateTrainingPlanStatusRequest request)
         {
             throw new NotImplementedException();
         }
@@ -167,6 +183,17 @@ namespace ConfigRutina.Application.Services.TrainingPlan
         public TrainingPlanResponse UpdateTrainingPlan()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<TrainingPlanStatusResponse> SetStatus(string? strId, bool status)
+        {
+            Guid id;
+            Guid.TryParse(strId, out id);
+
+            await _validatortrainingPlanPatchStatusRequest.Validate(strId);
+
+            await _command.UpdateStatusTrainingPlan(id, status);
+            return _mapper.ToStatusResponse((await _query.GetTrainingPlanById(id))!);
         }
     }
 }

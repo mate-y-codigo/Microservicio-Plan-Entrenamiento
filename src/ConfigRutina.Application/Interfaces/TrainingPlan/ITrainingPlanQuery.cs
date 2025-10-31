@@ -10,6 +10,7 @@ namespace ConfigRutina.Application.Interfaces.TrainingPlan
 {
     public interface ITrainingPlanQuery
     {
+        Task<bool> ExistsTrainingPlan(Guid id);
         Task<PlanEntrenamiento> GetTrainingPlanById(Guid id);
         Task<List<PlanEntrenamiento>> GetTrainingPlanFilter(string? name, bool? isTemplate, Guid? trainerId, bool? active, DateTime? from, DateTime? to, TrainingPlanOrderBy orderBy);
     }

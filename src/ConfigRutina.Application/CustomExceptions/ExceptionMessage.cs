@@ -24,5 +24,8 @@ namespace ConfigRutina.Application.CustomExceptions
         public const string MuscleGroupInvalid = "El ID del grupo muscular seleccionado no existe";
         public const string MuscleNameLength = "El nombre del musculo es demasiado largo";
         public const string MuscleGroupNameLength = "El nombre del grupo muscular es demasiado largo";
+
+        public const string TrainingPlanIdInvalidFormat = "Formato del ID del ejercicio inválido";
+        public const string TrainingPlanInvalid = "El ID del plan de entrenamiento seleccionado no existe";
     }
 }
