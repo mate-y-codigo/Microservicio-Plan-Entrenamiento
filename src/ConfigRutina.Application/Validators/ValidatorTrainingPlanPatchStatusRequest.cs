@@ -20,7 +20,7 @@ namespace ConfigRutina.Application.Validators
             _trainingPlanQuery = trainingPlanQuery;
         }
 
-        public async Task Validate(string strId)
+        public async Task Validate(string? strId)
         {
             Guid id;
 
