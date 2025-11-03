@@ -19,7 +19,7 @@ namespace ConfigRutina.Infrastructure.Queries
             _configRutinaDB = configRutinaDB;
         }
 
-        public async Task<SesionEntrenamiento> GetById(Guid id)
+        public async Task<SesionEntrenamiento?> GetById(Guid id)
         {
             return await _configRutinaDB.SesionEntrenamientos
                 .AsNoTracking()

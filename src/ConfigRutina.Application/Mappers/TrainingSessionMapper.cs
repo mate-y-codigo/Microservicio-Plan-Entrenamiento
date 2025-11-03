@@ -29,10 +29,22 @@ namespace ConfigRutina.Application.Mappers
             var response = new TrainingSessionResponse
             {
                 id = session.Id,
-                planEntrenamientoId = session.IdPlanEntrenamiento,
                 nombre = session.Nombre,
                 orden = session.Orden,
                 sesionesEjercicio= exerciseSessions
+            };
+            return response;
+        }
+
+        public TrainingSessionWithPlanResponse ToWithPlanResponse(SesionEntrenamiento session, List<ExerciseSessionShortResponse> exerciseSessions)
+        {
+            var response = new TrainingSessionWithPlanResponse
+            {
+                id = session.Id,
+                idPlanEntrenamiento = session.IdPlanEntrenamiento,
+                nombre = session.Nombre,
+                orden = session.Orden,
+                sesionesEjercicio = exerciseSessions
             };
             return response;
         }

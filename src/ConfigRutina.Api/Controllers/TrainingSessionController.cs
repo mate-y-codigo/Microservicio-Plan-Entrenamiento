@@ -3,6 +3,7 @@ using ConfigRutina.Application.DTOs.Response.TrainingSession;
 using ConfigRutina.Application.Interfaces.TrainingSession;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace ConfigRutina.Api.Controllers
 {
@@ -17,37 +18,29 @@ namespace ConfigRutina.Api.Controllers
             _trainingSessionService = trainingSessionService;
         }
 
-        [HttpGet]
-        [ProducesResponseType(typeof(TrainingSessionResponse), 200)]
+        /// <summary>
+        /// Obtener sesión de entrenamiento por Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(typeof(TrainingSessionWithPlanResponse), 200)]
         [ProducesResponseType(typeof(ApiError),404)]
-        [ProducesResponseType(typeof(ApiError), 409)]
-        [ProducesResponseType(typeof(ApiError), 400)]
 
-        public async Task<IActionResult> GetTrainingSessionByTrainingPlan(string id){
+        public async Task<IActionResult> GetTrainingSessionById(Guid id){
             try
             {
-                return new JsonResult(_trainingSessionService.GetTrainingSessionById(id));
+                var result = await _trainingSessionService.GetTrainingSessionById(id);
+                return new JsonResult(result) { StatusCode = StatusCodes.Status200OK };
             }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(new ApiError { message = ex.Message });
-            }
-
             catch (NotFoundException ex)
             {
                 return NotFound(new ApiError { message = ex.Message });
-            }
-            catch (ConflictException ex)
-            {
-
-                return Conflict(new ApiError { message = ex.Message });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
             }
         }
-
     }
 }
-

@@ -9,7 +9,7 @@ namespace ConfigRutina.Application.Interfaces.TrainingSession
 {
     public interface ITrainingSessionQuery
     {
-        Task<SesionEntrenamiento> GetById(Guid id);
+        Task<SesionEntrenamiento?> GetById(Guid id);
         Task<List<SesionEntrenamiento>> GetTrainingSessionsByPlan(Guid idTP);
     }
 }

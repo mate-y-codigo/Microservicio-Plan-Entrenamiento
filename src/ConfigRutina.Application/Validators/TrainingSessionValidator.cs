@@ -16,7 +16,7 @@ namespace ConfigRutina.Application.Validators
             _exerciseSessionValidator = exerciseSessionValidator;
         }
 
-        public async Task ValidateCreate(TrainingSessionCreateRequest request)
+        public Task ValidateCreate(TrainingSessionCreateRequest request)
         {
             if (request == null)
             {
@@ -34,13 +34,14 @@ namespace ConfigRutina.Application.Validators
             {
                 throw new BadRequestException("El orden de la sesión debe ser mayor a 0.");
             }
-            if (request.sessionExerciseCreateRequests != null)
+            if (request.sesionesEjercicio != null)
             {
-                foreach (var ejercicio in request.sessionExerciseCreateRequests)
+                foreach (var ejercicio in request.sesionesEjercicio)
                 {
                     _exerciseSessionValidator.ValidateCreate(ejercicio);
                 }
             }
+            return Task.CompletedTask;
         }
     }
 }

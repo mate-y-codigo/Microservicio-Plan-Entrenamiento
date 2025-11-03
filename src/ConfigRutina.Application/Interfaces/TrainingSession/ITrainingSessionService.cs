@@ -12,6 +12,6 @@ namespace ConfigRutina.Application.Interfaces.TrainingSession
     public interface ITrainingSessionService
     {
         Task<SesionEntrenamiento> CreateAsync(Guid planId, TrainingSessionCreateRequest request);
-        Task<TrainingSessionResponse> GetTrainingSessionById(string id);
+        Task<TrainingSessionWithPlanResponse> GetTrainingSessionById(Guid id);
     }
 }

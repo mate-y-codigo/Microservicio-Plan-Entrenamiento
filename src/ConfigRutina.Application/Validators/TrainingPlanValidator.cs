@@ -33,11 +33,11 @@ namespace ConfigRutina.Application.Validators
             {
                 throw new BadRequestException("El nombre del plan de entrenamiento no puede superar los 100 caracteres.");
             }
-            if (request.TrainingSessionCreateRequests == null || request.TrainingSessionCreateRequests.Count == 0)
+            if (request.sesionesEntrenamiento == null || request.sesionesEntrenamiento.Count == 0)
             {
                 throw new BadRequestException("El plan de entrenamiento debe contener al menos una sesión de entrenamiento.");
             }
-            foreach (var ts in request.TrainingSessionCreateRequests)
+            foreach (var ts in request.sesionesEntrenamiento)
             {
                 await _trainingSessionValidator.ValidateCreate(ts);
             }

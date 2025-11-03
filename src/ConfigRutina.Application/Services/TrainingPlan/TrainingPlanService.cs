@@ -70,11 +70,11 @@ namespace ConfigRutina.Application.Services.TrainingPlan
         {
             // Validaciones de forma (sin BD)
             await _validator.ValidateCreate(request);
-            foreach (var s in request.TrainingSessionCreateRequests)
+            foreach (var s in request.sesionesEntrenamiento)
             {
                 await _trainingSessionValidator.ValidateCreate(s);
             }
-            foreach (var e in request.TrainingSessionCreateRequests.SelectMany(s => s.sessionExerciseCreateRequests))
+            foreach (var e in request.sesionesEntrenamiento.SelectMany(s => s.sesionesEjercicio))
             {
                 _exerciseSessionValidator.ValidateCreate(e);
             }
@@ -85,14 +85,14 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             var sessionEntities = new List<SesionEntrenamiento>();
             var exerciseEntities = new List<EjercicioSesion>();
 
-            foreach (var s in request.TrainingSessionCreateRequests.OrderBy(x => x.orden))
+            foreach (var s in request.sesionesEntrenamiento.OrderBy(x => x.orden))
             {
                 var session = _trainingSessionMapper.ToTrainingSession(plan.Id, s);
                 sessionEntities.Add(session);
 
-                if (s.sessionExerciseCreateRequests != null)
+                if (s.sesionesEjercicio != null)
                 {
-                    foreach (var ex in s.sessionExerciseCreateRequests.OrderBy(e => e.orden))
+                    foreach (var ex in s.sesionesEjercicio.OrderBy(e => e.orden))
                     {
                         var exEntity = _exerciseSessionMapper.ToExerciseSession(session.Id, ex);
                         exerciseEntities.Add(exEntity);

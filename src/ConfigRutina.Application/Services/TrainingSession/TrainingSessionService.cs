@@ -1,5 +1,7 @@
-﻿using ConfigRutina.Application.DTOs.Request.TrainingSession;
+﻿using ConfigRutina.Application.CustomExceptions;
+using ConfigRutina.Application.DTOs.Request.TrainingSession;
 using ConfigRutina.Application.DTOs.Response.TrainingSession;
+using ConfigRutina.Application.Interfaces.ExcerciseSession;
 using ConfigRutina.Application.Interfaces.ExerciseSession;
 using ConfigRutina.Application.Interfaces.TrainingSession;
 using ConfigRutina.Application.Mappers;
@@ -19,26 +21,32 @@ namespace ConfigRutina.Application.Services.TrainingSession
         private readonly IExerciseSessionService _exerciseSessionService;
         private readonly TrainingSessionMapper _mapper;
         private readonly TrainingSessionValidator _validator;
+        private readonly ITrainingSessionQuery _query;
+        private readonly IExerciseSessionQuery _exerciseSessionQuery;
+        private readonly ExerciseSessionMapper _exerciseSessionMapper;
 
-        public TrainingSessionService(ITrainingSessionCommand command, IExerciseSessionService exerciseSessionService, TrainingSessionMapper mapper, TrainingSessionValidator validator)
+        public TrainingSessionService(ITrainingSessionCommand command, IExerciseSessionService exerciseSessionService, TrainingSessionMapper mapper, TrainingSessionValidator validator, ITrainingSessionQuery query, IExerciseSessionQuery exerciseSessionQuery, ExerciseSessionMapper exerciseSessionMapper)
         {
             _command = command;
             _exerciseSessionService = exerciseSessionService;
             _mapper = mapper;
             _validator = validator;
+            _query = query;
+            _exerciseSessionQuery = exerciseSessionQuery;
+            _exerciseSessionMapper = exerciseSessionMapper;
         }
 
         public async Task<SesionEntrenamiento> CreateAsync(Guid planId, TrainingSessionCreateRequest request)
         {
-            _validator.ValidateCreate(request);
+            await _validator.ValidateCreate(request);
 
             var trainingSession = _mapper.ToTrainingSession(planId, request);
             await _command.InsertTrainingSession(trainingSession);
 
             trainingSession.EjercicioSesionLista = new List<EjercicioSesion>();
-            if (request.sessionExerciseCreateRequests != null)
+            if (request.sesionesEjercicio != null)
             {
-                foreach (var se in request.sessionExerciseCreateRequests.OrderBy(e => e.orden))
+                foreach (var se in request.sesionesEjercicio.OrderBy(e => e.orden))
                 {
                     var exerciseSession = await _exerciseSessionService.CreateAsync(trainingSession.Id, se);
                     trainingSession.EjercicioSesionLista.Add(exerciseSession);
@@ -47,9 +55,19 @@ namespace ConfigRutina.Application.Services.TrainingSession
             return trainingSession;
         }
 
-        public Task<TrainingSessionResponse> GetTrainingSessionById(string id)
+        public async Task<TrainingSessionWithPlanResponse> GetTrainingSessionById(Guid id)
         {
-            throw new NotImplementedException();
+            var sesion = await _query.GetById(id);
+            if (sesion is null)
+                throw new NotFoundException("La sesión de entrenamiento no existe.");
+
+            var ejercicios = await _exerciseSessionQuery.GetExerciseSessionsByTrainingSession(sesion.Id);
+            var shorts = ejercicios
+                .OrderBy(e => e.Orden)
+                .Select(_exerciseSessionMapper.ToShortResponse)
+                .ToList();
+
+            return _mapper.ToWithPlanResponse(sesion, shorts);
         }
     }
 }

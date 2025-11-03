@@ -11,6 +11,6 @@ namespace ConfigRutina.Application.DTOs.Request.TrainingSession
     {
         public required string nombre { get; set; } = string.Empty;
         public required int orden { get; set; }
-        public List<SessionExerciseCreateRequest> sessionExerciseCreateRequests { get; set; } = new();
+        public List<SessionExerciseCreateRequest> sesionesEjercicio { get; set; } = new();
     }
 }
