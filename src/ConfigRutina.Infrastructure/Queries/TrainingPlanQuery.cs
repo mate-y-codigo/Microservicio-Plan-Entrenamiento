@@ -107,5 +107,13 @@ namespace ConfigRutina.Infrastructure.Queries
 
             return await query.ToListAsync();
         }
+
+        public async Task<bool> ExistsTemplateNameAsync(string name)
+        {
+            var n = name.Trim().ToLower();
+            return await _configRutinaDB.PlanEntrenamientos
+                .AsNoTracking()
+                .AnyAsync(pe => pe.EsPlantilla && pe.Nombre.ToLower() == n);
+        }
     }
 }
