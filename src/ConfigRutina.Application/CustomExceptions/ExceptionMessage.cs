@@ -27,5 +27,6 @@ namespace ConfigRutina.Application.CustomExceptions
 
         public const string TrainingPlanIdInvalidFormat = "Formato del ID del ejercicio inválido";
         public const string TrainingPlanInvalid = "El ID del plan de entrenamiento seleccionado no existe";
+        public const string TrainingPlanInvalidIdFormat = "El formato de Id ingresado no es correcto";
     }
 }

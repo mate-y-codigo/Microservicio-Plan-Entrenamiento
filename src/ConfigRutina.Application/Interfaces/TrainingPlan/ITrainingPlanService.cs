@@ -13,9 +13,9 @@ namespace ConfigRutina.Application.Interfaces.TrainingPlan
     public interface ITrainingPlanService
     {
         Task<TrainingPlanResponse> CreateTrainingPlan(CreateTrainingPlanRequest request);
-        public TrainingPlanResponse UpdateTrainingPlan();
+        Task<TrainingPlanResponse> UpdateTrainingPlan();
+        Task<TrainingPlanResponse> DeleteTrainingPlan(string id,bool IsUsed);
         Task<TrainingPlanResponse> GetTrainingPlanById(Guid id);
-        public TrainingPlanStatusResponse ChangeStateTrainingPlan(string id, UpdateTrainingPlanStatusRequest request);
         Task<List<TrainingPlanResponse>> GetFilterTrainingPlan(string? name, bool? plantilla, Guid? IdEntrenador, bool? active, DateTime? from, DateTime? to, TrainingPlanOrderBy OrderBy);
         Task<TrainingPlanStatusResponse> SetStatus(string? strId, bool status);
     }

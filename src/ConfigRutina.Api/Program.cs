@@ -98,6 +98,7 @@ builder.Services.AddScoped<ITrainingPlanQuery, TrainingPlanQuery>();
 builder.Services.AddScoped<TrainingPlanMapper>();
 builder.Services.AddScoped<TrainingPlanValidator>();
 builder.Services.AddScoped<ITrainingPlanAggregateCommand, TrainingPlanAggregateCommand>();
+builder.Services.AddScoped<IValidateTrainingPlanDelete, ValidatorTrainingPlanDelete>();
 
 //training Session Dependencies
 builder.Services.AddScoped<ITrainingSessionCommand, TrainingSessionCommand>();

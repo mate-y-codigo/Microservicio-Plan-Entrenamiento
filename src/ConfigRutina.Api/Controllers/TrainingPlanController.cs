@@ -113,6 +113,7 @@ namespace ConfigRutina.Api.Controllers
             {
                 return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
             }
+           
         }
 
         /// <summary>
@@ -139,7 +140,51 @@ namespace ConfigRutina.Api.Controllers
             {
                 return new JsonResult(new ApiError { message = ex.Message }) { StatusCode = ex.Status };
             }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
+            }
         }
+
+
+        /// <summary>
+        /// Eliminar un plan de entrenamiento
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="IsUsed"></param>
+        /// <returns></returns>
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(TrainingPlanResponse), 200)]
+        [ProducesResponseType(typeof(ApiError), 400)]
+        [ProducesResponseType(typeof(ApiError), 404)]
+        [ProducesResponseType(typeof(ApiError), 409)]
+
+        public async Task<IActionResult> DeleteTrainingPlan(string id,bool IsUsed){
+            try
+            {
+                return new JsonResult(await _trainingPlanService.DeleteTrainingPlan(id, IsUsed)) { StatusCode = 200 };
+            }
+            catch (BadRequestException ex)
+            {
+                return new JsonResult(new ApiError { message = ex.Message }) { StatusCode = ex.Status };
+            }
+            catch (NotFoundException ex)
+            {
+                return new JsonResult(new ApiError { message = ex.Message }) { StatusCode = ex.Status };
+            }
+            catch (ConflictException ex) { 
+                return new JsonResult(new ApiError { message = ex.Message}) { StatusCode = ex.Status };
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
+            }
+
+        }
+
 
         //[HttpPut("{id}")]
         //[ProducesResponseType(typeof(TrainingPlanStatusResponse), 200)]

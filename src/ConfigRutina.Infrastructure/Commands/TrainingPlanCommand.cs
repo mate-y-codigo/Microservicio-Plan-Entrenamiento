@@ -59,5 +59,35 @@ namespace ConfigRutina.Infrastructure.Commands
                 );
             await _configRutinaDB.SaveChangesAsync();
         }
+
+        public async Task DeleteTrainingPlan(Guid id)
+        {
+            // se buscan las sesiones asociadas
+            var sesiones = await _configRutinaDB.SesionEntrenamientos
+            .Where(s => s.IdPlanEntrenamiento == id)
+            .ToListAsync();
+
+            foreach (var sesion in sesiones)
+            {
+                // Borrar ejercicios de la sesión
+                await _configRutinaDB.EjercicioSesiones
+                    .Where(e => e.IdSesionEntrenamiento == sesion.Id)
+                    .ExecuteDeleteAsync();
+            }
+
+            //borra las  sesiones de entrenamiento
+
+            await _configRutinaDB.SesionEntrenamientos
+            .Where(s => s.IdPlanEntrenamiento == id)
+            .ExecuteDeleteAsync();
+
+            //borra el plan
+            await _configRutinaDB.PlanEntrenamientos
+                .Where(pe => pe.Id == id)
+                .ExecuteDeleteAsync();
+
+            await _configRutinaDB.SaveChangesAsync();
+        }
+
     }
 }

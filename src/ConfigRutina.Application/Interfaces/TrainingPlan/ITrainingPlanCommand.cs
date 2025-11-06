@@ -12,5 +12,6 @@ namespace ConfigRutina.Application.Interfaces.TrainingPlan
         Task InsertTrainingPlan(PlanEntrenamiento TP);
         Task UpdateTrainingPlan(PlanEntrenamiento TP);
         Task UpdateStatusTrainingPlan(Guid id, bool status);
+        Task DeleteTrainingPlan(Guid id);
     }
 }

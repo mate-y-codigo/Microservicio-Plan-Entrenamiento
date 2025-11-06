@@ -15,8 +15,10 @@ using ConfigRutina.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConfigRutina.Application.Services.TrainingPlan
 {
@@ -35,7 +37,7 @@ namespace ConfigRutina.Application.Services.TrainingPlan
         private readonly ITrainingSessionQuery _trainingSessionQuery;
         private readonly IExerciseSessionQuery _exerciseSessionQuery;
         private readonly IValidatorTrainingPlanPatchStatusRequest _validatortrainingPlanPatchStatusRequest;
-
+        private readonly IValidateTrainingPlanDelete _trainingPlanDeleteValidator;
         public TrainingPlanService(
             ITrainingPlanCommand command,
             ITrainingPlanQuery query,
@@ -49,7 +51,8 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             ITrainingPlanAggregateCommand aggregateCommand,
             ITrainingSessionQuery trainingSessionQuery,
             IExerciseSessionQuery exerciseSessionQuery,
-            IValidatorTrainingPlanPatchStatusRequest validatortrainingPlanPatchStatusRequest)
+            IValidatorTrainingPlanPatchStatusRequest validatortrainingPlanPatchStatusRequest,
+            IValidateTrainingPlanDelete ValidatorTrainingPlanDeleteValidator)
         {
             _command = command;
             _query = query;
@@ -64,6 +67,7 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             _trainingSessionQuery = trainingSessionQuery;
             _exerciseSessionQuery = exerciseSessionQuery;
             _validatortrainingPlanPatchStatusRequest = validatortrainingPlanPatchStatusRequest;
+            _trainingPlanDeleteValidator = ValidatorTrainingPlanDeleteValidator;
         }
 
         public async Task<TrainingPlanResponse> CreateTrainingPlan(CreateTrainingPlanRequest request)
@@ -121,11 +125,6 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             return _mapper.ToResponse(plan, sessionResponses);
         }
 
-        public TrainingPlanStatusResponse ChangeStateTrainingPlan(string id, UpdateTrainingPlanStatusRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<TrainingPlanResponse>> GetFilterTrainingPlan(string? name, bool? isTemplate, Guid? trainerId, bool? active, DateTime? from, DateTime? to, TrainingPlanOrderBy orderBy)
         {
             var trainingPlans = await _query.GetTrainingPlanFilter(name, isTemplate, trainerId, active, from, to, orderBy);
@@ -180,7 +179,7 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             return _mapper.ToResponse(plan, sessionResponses);
         }
 
-        public TrainingPlanResponse UpdateTrainingPlan()
+        public Task<TrainingPlanResponse>UpdateTrainingPlan()
         {
             throw new NotImplementedException();
         }
@@ -194,6 +193,33 @@ namespace ConfigRutina.Application.Services.TrainingPlan
 
             await _command.UpdateStatusTrainingPlan(id, status);
             return _mapper.ToStatusResponse((await _query.GetTrainingPlanById(id))!);
+        }
+
+        public async Task<TrainingPlanResponse> DeleteTrainingPlan(string id,bool IsUsed)
+        {
+            Guid ID;
+            await _trainingPlanDeleteValidator.Validate(id, IsUsed);
+            Guid.TryParse(id, out ID);
+            var query = await _query.GetTrainingPlanById(ID);
+  
+            var sessions = await _trainingSessionQuery.GetTrainingSessionsByPlan(query.Id);
+            var Orderedsessions = (sessions ?? new List<SesionEntrenamiento>())
+                .OrderBy(s => s.Orden)
+                .ToList();
+
+            var sessionResponses = new List<TrainingSessionResponse>();
+            foreach (var session in Orderedsessions)
+            {
+                var exercises = await _exerciseSessionQuery.GetExerciseSessionsByTrainingSession(session.Id);
+                var exercisesShort = (exercises ?? new List<EjercicioSesion>())
+                    .OrderBy(e => e.Orden)
+                    .Select(_exerciseSessionMapper.ToShortResponse)
+                    .ToList();
+
+                sessionResponses.Add(_trainingSessionMapper.ToResponse(session, exercisesShort));
+            }
+            await _command.DeleteTrainingPlan(ID);
+            return _mapper.ToResponse(query,sessionResponses);
         }
     }
 }
