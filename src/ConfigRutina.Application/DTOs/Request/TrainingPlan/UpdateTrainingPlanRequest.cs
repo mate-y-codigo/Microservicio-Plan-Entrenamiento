@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ConfigRutina.Application.DTOs.Request.TrainingSession;
+using ConfigRutina.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,6 @@ namespace ConfigRutina.Application.DTOs.Request.TrainingPlan
 {
     public class UpdateTrainingPlanRequest
     {
+       public List<TrainingSessionUpdateRequest> sesionEntrenamientos { get; set; } = new();
     }
 }

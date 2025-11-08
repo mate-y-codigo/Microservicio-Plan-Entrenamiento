@@ -11,5 +11,6 @@ namespace ConfigRutina.Application.Interfaces.ExcerciseSession
     {
         Task<EjercicioSesion> GetById(Guid id);
         Task<List<EjercicioSesion>> GetExerciseSessionsByTrainingSession(Guid idTS);
+        Task<bool> metodo(Guid IdSesion, Guid IdEjercicio);
     }
 }

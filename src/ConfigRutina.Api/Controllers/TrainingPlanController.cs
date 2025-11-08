@@ -185,38 +185,41 @@ namespace ConfigRutina.Api.Controllers
 
         }
 
+        /// <summary>
+        /// Actualizar un plan de entrenamiento
+        /// </summary>
 
-        //[HttpPut("{id}")]
-        //[ProducesResponseType(typeof(TrainingPlanStatusResponse), 200)]
-        //[ProducesResponseType(typeof(ApiError), 400)]
-        //[ProducesResponseType(typeof(ApiError), 404)]
-        //[ProducesResponseType(typeof(ApiError), 409)]
-        //public async Task<IActionResult> ChangeTrainingPlanStatus(string id, [FromBody] UpdateTrainingPlanStatusRequest request)
-        //{
-        //    try
-        //    {
-        //        return new JsonResult(_trainingPlanService.ChangeStateTrainingPlan(id, request));
-        //    }
-        //    catch (BadRequestException ex)
-        //    {
-        //        return BadRequest(new ApiError { message = ex.Message });
-        //    }
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(TrainingPlanStatusResponse), 200)]
+        [ProducesResponseType(typeof(ApiError), 400)]
+        [ProducesResponseType(typeof(ApiError), 404)]
+        [ProducesResponseType(typeof(ApiError), 409)]
+        public async Task<IActionResult> UpdateTrainingPlan(string id, [FromBody] UpdateTrainingPlanRequest request,bool IsAsigned)
+        {
+            try
+            {
+                return new JsonResult(await _trainingPlanService.UpdateTrainingPlan(id, request,IsAsigned));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(new ApiError { message = ex.Message });
+            }
 
-        //    catch (NotFoundException ex)
-        //    {
-        //        return NotFound(new ApiError { message = ex.Message });
-        //    }
+              catch (NotFoundException ex)
+            {
+                return NotFound(new ApiError { message = ex.Message });
+            }
 
-        //    catch (ConflictException ex)
-        //    {
-        //        return Conflict(new ApiError { message = ex.Message });
-        //    }
+            catch (ConflictException ex)
+            {
+                return Conflict(new ApiError { message = ex.Message });
+            }
 
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
-        //    }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
+            }
 
-        //}
+        }
     }
 }

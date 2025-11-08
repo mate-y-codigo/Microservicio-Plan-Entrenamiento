@@ -53,5 +53,26 @@ namespace ConfigRutina.Application.Mappers
                 activo = plan.Activo
             };
         }
+
+        public PlanEntrenamiento UpdateToTrainingPlan(Guid id,UpdateTrainingPlanRequest request) {
+
+            return new PlanEntrenamiento
+            {
+                Id = id,
+                SesionEntrenamientoLista = request.sesionEntrenamientos.Select(entrenamiento => new SesionEntrenamiento
+                {
+                    Id = entrenamiento.IdSesionEntrenamiento,
+                    Orden = entrenamiento.orden,
+                    EjercicioSesionLista = entrenamiento.EjercicioSesiones.Select(ejercicioSesion => new EjercicioSesion { 
+                        Id = ejercicioSesion.idEjercicio,
+                        SeriesObjetivo = ejercicioSesion.seriesObjetivo,
+                        RepeticionesObjetivo = ejercicioSesion.repeticionesObjetivo,
+                        PesoObjetivo = ejercicioSesion.pesoObjetivo,
+                        Descanso = ejercicioSesion.descanso,
+                        Orden = ejercicioSesion.orden,
+                    }).ToList(),
+                }).ToList(),
+            };
+        } 
     }
 }

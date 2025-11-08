@@ -37,5 +37,10 @@ namespace ConfigRutina.Infrastructure.Queries
                 .Include(es => es.SesionEntrenamientoEn)
                 .Where(es => es.IdSesionEntrenamiento == idTS).ToListAsync();
         }
+
+        public async Task<bool> metodo(Guid idSesion, Guid idEjercicio){
+           return await _configRutinaDB.EjercicioSesiones
+            .AnyAsync(es => es.IdSesionEntrenamiento == idSesion && es.IdEjercicio == idEjercicio);
+        }
     }
 }
