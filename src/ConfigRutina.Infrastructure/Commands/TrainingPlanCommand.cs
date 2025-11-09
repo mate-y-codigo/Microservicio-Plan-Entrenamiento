@@ -40,10 +40,6 @@ namespace ConfigRutina.Infrastructure.Commands
             await _configRutinaDB.PlanEntrenamientos
                 .Where(pe => pe.Id == TP.Id)
                 .ExecuteUpdateAsync(setters => setters
-                .SetProperty(pe => pe.Nombre, TP.Nombre)
-                .SetProperty(pe => pe.Descripcion, TP.Descripcion)
-                .SetProperty(pe => pe.EsPlantilla, TP.EsPlantilla)
-                .SetProperty(pe => pe.Activo, TP.Activo)
                 .SetProperty(pe => pe.FechaActualizacion, TP.FechaActualizacion)
                 );
             await _configRutinaDB.SaveChangesAsync();

@@ -59,11 +59,12 @@ namespace ConfigRutina.Application.Mappers
             return new PlanEntrenamiento
             {
                 Id = id,
+                FechaActualizacion = DateTime.UtcNow,
                 SesionEntrenamientoLista = request.sesionEntrenamientos.Select(entrenamiento => new SesionEntrenamiento
                 {
                     Id = entrenamiento.IdSesionEntrenamiento,
                     Orden = entrenamiento.orden,
-                    EjercicioSesionLista = entrenamiento.EjercicioSesiones.Select(ejercicioSesion => new EjercicioSesion { 
+                    EjercicioSesionLista = entrenamiento.EjercicioSesiones.Select(ejercicioSesion => new EjercicioSesion {
                         Id = ejercicioSesion.idEjercicio,
                         SeriesObjetivo = ejercicioSesion.seriesObjetivo,
                         RepeticionesObjetivo = ejercicioSesion.repeticionesObjetivo,

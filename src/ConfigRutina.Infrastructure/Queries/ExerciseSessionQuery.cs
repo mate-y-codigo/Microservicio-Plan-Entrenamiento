@@ -38,9 +38,9 @@ namespace ConfigRutina.Infrastructure.Queries
                 .Where(es => es.IdSesionEntrenamiento == idTS).ToListAsync();
         }
 
-        public async Task<bool> metodo(Guid idSesion, Guid idEjercicio){
+        public async Task<bool> ExisteEnBd(Guid idSesion, Guid idEjercicio,Guid idEjercicioSesion){
            return await _configRutinaDB.EjercicioSesiones
-            .AnyAsync(es => es.IdSesionEntrenamiento == idSesion && es.IdEjercicio == idEjercicio);
+            .AnyAsync(es => es.IdSesionEntrenamiento == idSesion && es.IdEjercicio == idEjercicio && es.Id == idEjercicioSesion);
         }
     }
 }

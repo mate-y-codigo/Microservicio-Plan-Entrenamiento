@@ -29,7 +29,6 @@ namespace ConfigRutina.Infrastructure.Commands
         {
             await _configRutinaDB.SesionEntrenamientos.Where(ts => ts.Id == TS.Id)
                 .ExecuteUpdateAsync(setters => setters
-                .SetProperty(ts => ts.Nombre, TS.Nombre)
                 .SetProperty(ts => ts.Orden, TS.Orden)
                 .SetProperty(ts => ts.IdPlanEntrenamiento, TS.IdPlanEntrenamiento)
                 );

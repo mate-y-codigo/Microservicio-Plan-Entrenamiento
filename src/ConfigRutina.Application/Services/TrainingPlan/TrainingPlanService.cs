@@ -1,6 +1,7 @@
 ﻿using ConfigRutina.Application.CustomExceptions;
 using ConfigRutina.Application.DTOs.Request.SessionExercise;
 using ConfigRutina.Application.DTOs.Request.TrainingPlan;
+using ConfigRutina.Application.DTOs.Request.TrainingSession;
 using ConfigRutina.Application.DTOs.Response.ExerciseSession;
 using ConfigRutina.Application.DTOs.Response.TrainingPlan;
 using ConfigRutina.Application.DTOs.Response.TrainingSession;
@@ -41,6 +42,7 @@ namespace ConfigRutina.Application.Services.TrainingPlan
         private readonly IValidateTrainingPlanDelete _trainingPlanDeleteValidator;
         private readonly IValidateTrainingPlanUpdate _trainingPlanUpdateValidator;
         private readonly IExerciseSessionCommand _exerciseSessionCommand;
+        private readonly ITrainingSessionCommand _trainingSessionCommand;
         public TrainingPlanService(
             ITrainingPlanCommand command,
             ITrainingPlanQuery query,
@@ -57,7 +59,8 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             IValidatorTrainingPlanPatchStatusRequest validatortrainingPlanPatchStatusRequest,
             IValidateTrainingPlanDelete ValidatorTrainingPlanDeleteValidator,
             IValidateTrainingPlanUpdate ValidatorTrainingPlanUpdate,
-            IExerciseSessionCommand exerciseSessionCommand)
+            IExerciseSessionCommand exerciseSessionCommand,
+            ITrainingSessionCommand trainingSessionCommand)
 
             
         {
@@ -77,6 +80,7 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             _trainingPlanDeleteValidator = ValidatorTrainingPlanDeleteValidator;
             _trainingPlanUpdateValidator = ValidatorTrainingPlanUpdate;
             _exerciseSessionCommand = exerciseSessionCommand;
+            _trainingSessionCommand = trainingSessionCommand;
         }
 
         public async Task<TrainingPlanResponse> CreateTrainingPlan(CreateTrainingPlanRequest request)
@@ -193,26 +197,22 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             await _trainingPlanUpdateValidator.validate(id, request, IsAsigned);
             Guid IdPlan;
             Guid.TryParse(id, out IdPlan);
-           
+
+            var planToUpdate = _mapper.UpdateToTrainingPlan(IdPlan, request);
+            await _command.UpdateTrainingPlan(planToUpdate);
+
             foreach (var trainingSession in request.sesionEntrenamientos){
-                List<EjercicioSesion> listaReales = new List<EjercicioSesion>();
-                listaReales.AddRange(await _exerciseSessionQuery.GetExerciseSessionsByTrainingSession(trainingSession.IdSesionEntrenamiento));
+                var sessionEntity = new SesionEntrenamiento
+                {
+                    Id = trainingSession.IdSesionEntrenamiento,
+                    IdPlanEntrenamiento = IdPlan,
+                    Orden = trainingSession.orden,
+                };
+                await _trainingSessionCommand.UpdateTrainingSession(sessionEntity);
                 foreach (var exerciseSession in trainingSession.EjercicioSesiones) {
-                    if (!await _exerciseSessionQuery.metodo(trainingSession.IdSesionEntrenamiento, exerciseSession.idEjercicio))
+                    if (!await _exerciseSessionQuery.ExisteEnBd(trainingSession.IdSesionEntrenamiento, exerciseSession.idEjercicio,exerciseSession.id))
                     {
-                        var ejercicio = new EjercicioSesion
-                        {   
-                            
-                            IdSesionEntrenamiento = trainingSession.IdSesionEntrenamiento,
-                            IdEjercicio = exerciseSession.idEjercicio,
-                            Orden = exerciseSession.orden,
-                            Descanso = exerciseSession.descanso,
-                            PesoObjetivo = exerciseSession.pesoObjetivo,
-                            RepeticionesObjetivo = exerciseSession.repeticionesObjetivo,
-                            SeriesObjetivo = exerciseSession.seriesObjetivo
-                        };
-                       
-                        await _exerciseSessionCommand.InsertExerciseSession(ejercicio);
+                        throw new BadRequestException("El ejercicio ingresado no existe en la sesion de entrenamiento");
                     }
                     else {
                         var ejercicio = new EjercicioSesion
@@ -234,7 +234,7 @@ namespace ConfigRutina.Application.Services.TrainingPlan
 
             }
             var query =  await _query.GetTrainingPlanById(IdPlan);
-
+            
             return _mapper.ToStatusResponse(query);
 
         }
