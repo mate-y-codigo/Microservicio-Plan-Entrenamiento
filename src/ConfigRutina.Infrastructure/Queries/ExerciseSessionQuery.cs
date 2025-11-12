@@ -26,6 +26,8 @@ namespace ConfigRutina.Infrastructure.Queries
                 .Include(es => es.EjercicioEn)
                     .ThenInclude(e => e.CategoriaEjercicioEn)
                 .Include(es => es.SesionEntrenamientoEn)
+                .Include(es => es.EjercicioEn.MusculoEn)
+                    .ThenInclude(m => m.GrupoMuscularEn)
                 .FirstOrDefaultAsync(es => es.Id == id);
         }
 

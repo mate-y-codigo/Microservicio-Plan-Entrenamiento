@@ -194,11 +194,11 @@ namespace ConfigRutina.Api.Controllers
         [ProducesResponseType(typeof(ApiError), 400)]
         [ProducesResponseType(typeof(ApiError), 404)]
         [ProducesResponseType(typeof(ApiError), 409)]
-        public async Task<IActionResult> UpdateTrainingPlan(string id, [FromBody] UpdateTrainingPlanRequest request,bool IsAsigned)
+        public async Task<IActionResult> UpdateTrainingPlan(string id, [FromBody] UpdateTrainingPlanRequest request,bool IsRealised)
         {
             try
             {
-                return new JsonResult(await _trainingPlanService.UpdateTrainingPlan(id, request,IsAsigned));
+                return new JsonResult(await _trainingPlanService.UpdateTrainingPlan(id, request,IsRealised));
             }
             catch (BadRequestException ex)
             {
