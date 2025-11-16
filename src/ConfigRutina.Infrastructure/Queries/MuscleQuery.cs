@@ -29,6 +29,7 @@ namespace ConfigRutina.Infrastructure.Queries
             return await _configRutina.Musculos.
                 AsNoTracking().
                 Include(m => m.GrupoMuscularEn).
+                OrderBy(m => m.Id).
                 ToListAsync();
         }
 
@@ -45,6 +46,7 @@ namespace ConfigRutina.Infrastructure.Queries
             var query = _configRutina.Musculos.
                AsNoTracking().
                Include(m => m.GrupoMuscularEn).
+               OrderBy(m => m.Id).
                AsQueryable();
 
             // filters

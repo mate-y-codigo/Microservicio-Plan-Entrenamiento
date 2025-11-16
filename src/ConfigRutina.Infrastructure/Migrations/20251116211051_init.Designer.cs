@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ConfigRutina.Infrastructure.Migrations
 {
     [DbContext(typeof(ConfigRutinaDB))]
-    [Migration("20251028210123_Init")]
-    partial class Init
+    [Migration("20251116211051_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,62 +167,42 @@ namespace ConfigRutina.Infrastructure.Migrations
                         new
                         {
                             Id = 4,
-                            Nombre = "Bíceps"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Nombre = "Tríceps"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Nombre = "Antebrazos Flexor"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Nombre = "Antebrazos Extensor"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Nombre = "Espalda Dorsal y Escapular"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Nombre = "Espalda Lumbar"
-                        },
-                        new
-                        {
-                            Id = 10,
                             Nombre = "Pecho"
                         },
                         new
                         {
-                            Id = 11,
-                            Nombre = "Hombros Deltoides"
+                            Id = 5,
+                            Nombre = "Espalda"
                         },
                         new
                         {
-                            Id = 12,
-                            Nombre = "Hombros Manguito Rotador"
+                            Id = 6,
+                            Nombre = "Hombros"
                         },
                         new
                         {
-                            Id = 13,
+                            Id = 7,
+                            Nombre = "Brazos"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Nombre = "Antebrazos"
+                        },
+                        new
+                        {
+                            Id = 9,
                             Nombre = "Abdomen y Core"
                         },
                         new
                         {
-                            Id = 14,
-                            Nombre = "Zona lumbar"
+                            Id = 10,
+                            Nombre = "Lumbar"
                         },
                         new
                         {
-                            Id = 15,
-                            Nombre = "Cuello y Trapecio Superior"
+                            Id = 11,
+                            Nombre = "Cuello y Trapecio"
                         });
                 });
 
@@ -252,499 +232,181 @@ namespace ConfigRutina.Infrastructure.Migrations
                         {
                             Id = 1,
                             IdGrupoMuscular = 1,
-                            Nombre = "Cuádriceps recto femoral"
+                            Nombre = "Cuádriceps"
                         },
                         new
                         {
                             Id = 2,
                             IdGrupoMuscular = 1,
-                            Nombre = "Cuádriceps vasto lateral"
+                            Nombre = "Isquiotibiales"
                         },
                         new
                         {
                             Id = 3,
                             IdGrupoMuscular = 1,
-                            Nombre = "Cuádriceps vasto medial"
+                            Nombre = "Aductores"
                         },
                         new
                         {
                             Id = 4,
                             IdGrupoMuscular = 1,
-                            Nombre = "Cuádriceps vasto intermedio"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IdGrupoMuscular = 1,
-                            Nombre = "Isquiotibiales bíceps femoral"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            IdGrupoMuscular = 1,
-                            Nombre = "Isquiotibiales semitendinoso"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            IdGrupoMuscular = 1,
-                            Nombre = "Isquiotibiales semimembranoso"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            IdGrupoMuscular = 1,
-                            Nombre = "Aductores mayor"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            IdGrupoMuscular = 1,
-                            Nombre = "Aductores largo"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            IdGrupoMuscular = 1,
-                            Nombre = "Aductores corto"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            IdGrupoMuscular = 1,
-                            Nombre = "Aductores pectíneo"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            IdGrupoMuscular = 1,
-                            Nombre = "Aductores grácil"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            IdGrupoMuscular = 1,
                             Nombre = "Abductores"
                         },
                         new
                         {
-                            Id = 14,
+                            Id = 5,
                             IdGrupoMuscular = 2,
                             Nombre = "Glúteo mayor"
                         },
                         new
                         {
-                            Id = 15,
+                            Id = 6,
                             IdGrupoMuscular = 2,
                             Nombre = "Glúteo medio"
                         },
                         new
                         {
-                            Id = 16,
+                            Id = 7,
                             IdGrupoMuscular = 2,
                             Nombre = "Glúteo menor"
                         },
                         new
                         {
-                            Id = 17,
+                            Id = 8,
                             IdGrupoMuscular = 3,
-                            Nombre = "Gastrocnemio (gemelo)"
+                            Nombre = "Gemelos"
                         },
                         new
                         {
-                            Id = 18,
+                            Id = 9,
                             IdGrupoMuscular = 3,
                             Nombre = "Sóleo"
                         },
                         new
                         {
-                            Id = 19,
-                            IdGrupoMuscular = 3,
-                            Nombre = "Tibial posterior"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            IdGrupoMuscular = 3,
-                            Nombre = "Plantar"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            IdGrupoMuscular = 3,
-                            Nombre = "Peroneo largo"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            IdGrupoMuscular = 3,
-                            Nombre = "Peroneo corto"
-                        },
-                        new
-                        {
-                            Id = 23,
+                            Id = 10,
                             IdGrupoMuscular = 4,
-                            Nombre = "Bíceps braquial cabeza larga"
+                            Nombre = "Pectoral mayor"
                         },
                         new
                         {
-                            Id = 24,
+                            Id = 11,
                             IdGrupoMuscular = 4,
-                            Nombre = "Bíceps braquial cabeza corta"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            IdGrupoMuscular = 4,
-                            Nombre = "Braquial anterior"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            IdGrupoMuscular = 4,
-                            Nombre = "Braquiorradial"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            IdGrupoMuscular = 5,
-                            Nombre = "Tríceps braquial cabeza larga"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            IdGrupoMuscular = 5,
-                            Nombre = "Tríceps braquial cabeza lateral"
-                        },
-                        new
-                        {
-                            Id = 29,
-                            IdGrupoMuscular = 5,
-                            Nombre = "Tríceps braquial cabeza medial"
-                        },
-                        new
-                        {
-                            Id = 30,
-                            IdGrupoMuscular = 6,
-                            Nombre = "Flexor radial del carpo"
-                        },
-                        new
-                        {
-                            Id = 31,
-                            IdGrupoMuscular = 6,
-                            Nombre = "Flexor cubital del carpo"
-                        },
-                        new
-                        {
-                            Id = 32,
-                            IdGrupoMuscular = 6,
-                            Nombre = "Flexor superficial de los dedos"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            IdGrupoMuscular = 6,
-                            Nombre = "Flexor profundo de los dedos"
-                        },
-                        new
-                        {
-                            Id = 34,
-                            IdGrupoMuscular = 6,
-                            Nombre = "Flexor largo del pulgar"
-                        },
-                        new
-                        {
-                            Id = 35,
-                            IdGrupoMuscular = 6,
-                            Nombre = "Palmar largo"
-                        },
-                        new
-                        {
-                            Id = 36,
-                            IdGrupoMuscular = 6,
-                            Nombre = "Pronador redondo"
-                        },
-                        new
-                        {
-                            Id = 37,
-                            IdGrupoMuscular = 6,
-                            Nombre = "Pronador cuadrado"
-                        },
-                        new
-                        {
-                            Id = 38,
-                            IdGrupoMuscular = 7,
-                            Nombre = "Extensor radial largo del carpo"
-                        },
-                        new
-                        {
-                            Id = 39,
-                            IdGrupoMuscular = 7,
-                            Nombre = "Extensor radial corto del carpo"
-                        },
-                        new
-                        {
-                            Id = 40,
-                            IdGrupoMuscular = 7,
-                            Nombre = "Extensor cubital del carpo"
-                        },
-                        new
-                        {
-                            Id = 41,
-                            IdGrupoMuscular = 7,
-                            Nombre = "Extensor común de los dedos"
-                        },
-                        new
-                        {
-                            Id = 42,
-                            IdGrupoMuscular = 7,
-                            Nombre = "Extensor del meñique"
-                        },
-                        new
-                        {
-                            Id = 43,
-                            IdGrupoMuscular = 7,
-                            Nombre = "Extensor largo del pulgar"
-                        },
-                        new
-                        {
-                            Id = 44,
-                            IdGrupoMuscular = 7,
-                            Nombre = "Extensor corto del pulgar"
-                        },
-                        new
-                        {
-                            Id = 45,
-                            IdGrupoMuscular = 7,
-                            Nombre = "Extensor del índice"
-                        },
-                        new
-                        {
-                            Id = 46,
-                            IdGrupoMuscular = 7,
-                            Nombre = "Supinador"
-                        },
-                        new
-                        {
-                            Id = 47,
-                            IdGrupoMuscular = 8,
-                            Nombre = "Dorsal ancho"
-                        },
-                        new
-                        {
-                            Id = 48,
-                            IdGrupoMuscular = 8,
-                            Nombre = "Trapecio superior"
-                        },
-                        new
-                        {
-                            Id = 49,
-                            IdGrupoMuscular = 8,
-                            Nombre = "Trapecio medio"
-                        },
-                        new
-                        {
-                            Id = 50,
-                            IdGrupoMuscular = 8,
-                            Nombre = "Trapecio inferior"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            IdGrupoMuscular = 8,
-                            Nombre = "Romboide mayor"
-                        },
-                        new
-                        {
-                            Id = 52,
-                            IdGrupoMuscular = 8,
-                            Nombre = "Romboide menor"
-                        },
-                        new
-                        {
-                            Id = 53,
-                            IdGrupoMuscular = 8,
-                            Nombre = "Redondo mayor"
-                        },
-                        new
-                        {
-                            Id = 54,
-                            IdGrupoMuscular = 9,
-                            Nombre = "Erectores espinales iliocostal"
-                        },
-                        new
-                        {
-                            Id = 55,
-                            IdGrupoMuscular = 9,
-                            Nombre = "Erectores espinales longísimo"
-                        },
-                        new
-                        {
-                            Id = 56,
-                            IdGrupoMuscular = 9,
-                            Nombre = "Erectores espinales espinoso"
-                        },
-                        new
-                        {
-                            Id = 57,
-                            IdGrupoMuscular = 9,
-                            Nombre = "Multífidos"
-                        },
-                        new
-                        {
-                            Id = 58,
-                            IdGrupoMuscular = 9,
-                            Nombre = "Cuadrado lumbar"
-                        },
-                        new
-                        {
-                            Id = 59,
-                            IdGrupoMuscular = 10,
-                            Nombre = "Pectoral mayor porción clavicular"
-                        },
-                        new
-                        {
-                            Id = 60,
-                            IdGrupoMuscular = 10,
-                            Nombre = "Pectoral mayor esternal"
-                        },
-                        new
-                        {
-                            Id = 61,
-                            IdGrupoMuscular = 10,
-                            Nombre = "Pectoral mayor abdominal"
-                        },
-                        new
-                        {
-                            Id = 62,
-                            IdGrupoMuscular = 10,
                             Nombre = "Pectoral menor"
                         },
                         new
                         {
-                            Id = 63,
-                            IdGrupoMuscular = 10,
-                            Nombre = "Serrato anterior"
+                            Id = 12,
+                            IdGrupoMuscular = 5,
+                            Nombre = "Dorsales"
                         },
                         new
                         {
-                            Id = 64,
-                            IdGrupoMuscular = 10,
-                            Nombre = "Subclavio"
+                            Id = 13,
+                            IdGrupoMuscular = 5,
+                            Nombre = "Trapecio medio/inferior"
                         },
                         new
                         {
-                            Id = 65,
-                            IdGrupoMuscular = 11,
+                            Id = 14,
+                            IdGrupoMuscular = 5,
+                            Nombre = "Romboides"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            IdGrupoMuscular = 6,
                             Nombre = "Deltoide anterior"
                         },
                         new
                         {
-                            Id = 66,
-                            IdGrupoMuscular = 11,
-                            Nombre = "Deltoide lateral"
+                            Id = 16,
+                            IdGrupoMuscular = 6,
+                            Nombre = "Deltoide medio"
                         },
                         new
                         {
-                            Id = 67,
-                            IdGrupoMuscular = 11,
+                            Id = 17,
+                            IdGrupoMuscular = 6,
                             Nombre = "Deltoide posterior"
                         },
                         new
                         {
-                            Id = 68,
-                            IdGrupoMuscular = 12,
-                            Nombre = "Supraespinoso"
+                            Id = 18,
+                            IdGrupoMuscular = 6,
+                            Nombre = "Manguito rotador"
                         },
                         new
                         {
-                            Id = 69,
-                            IdGrupoMuscular = 12,
-                            Nombre = "Infraespinoso"
+                            Id = 19,
+                            IdGrupoMuscular = 7,
+                            Nombre = "Bíceps"
                         },
                         new
                         {
-                            Id = 70,
-                            IdGrupoMuscular = 12,
-                            Nombre = "Subescapular"
+                            Id = 20,
+                            IdGrupoMuscular = 7,
+                            Nombre = "Tríceps"
                         },
                         new
                         {
-                            Id = 71,
-                            IdGrupoMuscular = 12,
-                            Nombre = "Redondo menor"
+                            Id = 21,
+                            IdGrupoMuscular = 8,
+                            Nombre = "Flexores"
                         },
                         new
                         {
-                            Id = 72,
-                            IdGrupoMuscular = 13,
-                            Nombre = "Recto abdominal"
+                            Id = 22,
+                            IdGrupoMuscular = 8,
+                            Nombre = "Extensores"
                         },
                         new
                         {
-                            Id = 73,
-                            IdGrupoMuscular = 13,
-                            Nombre = "Oblicuo externo"
+                            Id = 23,
+                            IdGrupoMuscular = 9,
+                            Nombre = "Abdominales superiores"
                         },
                         new
                         {
-                            Id = 74,
-                            IdGrupoMuscular = 13,
-                            Nombre = "Oblicuo interno"
+                            Id = 24,
+                            IdGrupoMuscular = 9,
+                            Nombre = "Abdominales inferiores"
                         },
                         new
                         {
-                            Id = 75,
-                            IdGrupoMuscular = 13,
-                            Nombre = "Transverso abdominal"
+                            Id = 25,
+                            IdGrupoMuscular = 9,
+                            Nombre = "Oblicuos"
                         },
                         new
                         {
-                            Id = 76,
-                            IdGrupoMuscular = 13,
-                            Nombre = "Diafragma"
+                            Id = 26,
+                            IdGrupoMuscular = 9,
+                            Nombre = "Core profundo"
                         },
                         new
                         {
-                            Id = 77,
-                            IdGrupoMuscular = 14,
-                            Nombre = "Erectores espinales"
+                            Id = 27,
+                            IdGrupoMuscular = 10,
+                            Nombre = "Zona lumbar"
                         },
                         new
                         {
-                            Id = 78,
-                            IdGrupoMuscular = 14,
-                            Nombre = "Multífidos"
+                            Id = 28,
+                            IdGrupoMuscular = 10,
+                            Nombre = "Erectores"
                         },
                         new
                         {
-                            Id = 79,
-                            IdGrupoMuscular = 14,
-                            Nombre = "Cuadrado lumbar"
-                        },
-                        new
-                        {
-                            Id = 80,
-                            IdGrupoMuscular = 15,
+                            Id = 29,
+                            IdGrupoMuscular = 11,
                             Nombre = "Trapecio superior"
                         },
                         new
                         {
-                            Id = 81,
-                            IdGrupoMuscular = 15,
-                            Nombre = "Esternocleidomastoideo"
-                        },
-                        new
-                        {
-                            Id = 82,
-                            IdGrupoMuscular = 15,
-                            Nombre = "Escalenos"
-                        },
-                        new
-                        {
-                            Id = 83,
-                            IdGrupoMuscular = 15,
-                            Nombre = "Esplenio del cuello"
+                            Id = 30,
+                            IdGrupoMuscular = 11,
+                            Nombre = "Cuello"
                         });
                 });
 
