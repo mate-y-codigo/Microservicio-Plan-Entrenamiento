@@ -8,6 +8,6 @@ namespace ConfigRutina.Application.Interfaces.Validators
 {
     public interface IValidateTrainingPlanDelete
     {
-        Task Validate(string id, bool IsUsed);
+        Task Validate(string id);
     }
 }

@@ -19,15 +19,11 @@ namespace ConfigRutina.Application.Validators
             _TrainingPlanQuery = trainingPlanQuery;
         }
 
-        public async Task Validate(string id, bool IsUsed)
+        public async Task Validate(string id)
         {
             Guid ID;
             if (!Guid.TryParse(id, out ID)){
                 throw new BadRequestException(ExceptionMessage.TrainingPlanInvalidIdFormat);
-            }
-
-            if (IsUsed){
-                throw new ConflictException("No se puede eliminar un plan en uso");
             }
 
             var query = await _TrainingPlanQuery.GetTrainingPlanById(ID);

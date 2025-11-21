@@ -26,18 +26,13 @@ namespace ConfigRutina.Application.Validators
             _trainingSessionQuery = trainingSessionQuery;
         }
 
-        public async Task validate(string id, UpdateTrainingPlanRequest request, bool IsAsigned)
+        public async Task validate(string id, UpdateTrainingPlanRequest request)
         {
             
             Guid ID;
             if (!Guid.TryParse(id, out ID))
             {
                 throw new BadRequestException("El formato ingresado no es valido");
-            }
-
-            if (IsAsigned)
-            {
-                throw new ConflictException("No se puede modificar un plan que ya fue asignado");
             }
 
             var plan = await _trainingPlanQuery.GetTrainingPlanById(ID);

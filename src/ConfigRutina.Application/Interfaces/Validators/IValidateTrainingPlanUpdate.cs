@@ -9,6 +9,6 @@ namespace ConfigRutina.Application.Interfaces.Validators
 {
     public interface IValidateTrainingPlanUpdate
     {
-        Task validate(string id, UpdateTrainingPlanRequest request,bool IsAsigned);
+        Task validate(string id, UpdateTrainingPlanRequest request);
     }
 }

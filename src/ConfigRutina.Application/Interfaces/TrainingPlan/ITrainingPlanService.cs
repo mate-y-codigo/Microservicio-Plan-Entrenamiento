@@ -13,8 +13,8 @@ namespace ConfigRutina.Application.Interfaces.TrainingPlan
     public interface ITrainingPlanService
     {
         Task<TrainingPlanResponse> CreateTrainingPlan(CreateTrainingPlanRequest request);
-        Task<TrainingPlanStatusResponse> UpdateTrainingPlan(string id, UpdateTrainingPlanRequest request,bool IsAsigned);
-        Task<TrainingPlanResponse> DeleteTrainingPlan(string id,bool IsUsed);
+        Task<TrainingPlanStatusResponse> UpdateTrainingPlan(string id, UpdateTrainingPlanRequest request);
+        Task<TrainingPlanResponse> DeleteTrainingPlan(string id);
         Task<TrainingPlanResponse> GetTrainingPlanById(Guid id);
         Task<List<TrainingPlanResponse>> GetFilterTrainingPlan(string? name, bool? plantilla, Guid? IdEntrenador, bool? active, DateTime? from, DateTime? to, TrainingPlanOrderBy OrderBy);
         Task<TrainingPlanStatusResponse> SetStatus(string? strId, bool status);

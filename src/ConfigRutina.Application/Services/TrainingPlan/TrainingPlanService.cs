@@ -6,6 +6,7 @@ using ConfigRutina.Application.DTOs.Response.ExerciseSession;
 using ConfigRutina.Application.DTOs.Response.TrainingPlan;
 using ConfigRutina.Application.DTOs.Response.TrainingSession;
 using ConfigRutina.Application.Enums;
+using ConfigRutina.Application.Interfaces.Clients;
 using ConfigRutina.Application.Interfaces.Excercise;
 using ConfigRutina.Application.Interfaces.ExcerciseSession;
 using ConfigRutina.Application.Interfaces.TrainingPlan;
@@ -43,6 +44,8 @@ namespace ConfigRutina.Application.Services.TrainingPlan
         private readonly IValidateTrainingPlanUpdate _trainingPlanUpdateValidator;
         private readonly IExerciseSessionCommand _exerciseSessionCommand;
         private readonly ITrainingSessionCommand _trainingSessionCommand;
+        private readonly IUserClient _userClient;
+        private readonly IPlanAsignationClient _planAsignationClient;
         public TrainingPlanService(
             ITrainingPlanCommand command,
             ITrainingPlanQuery query,
@@ -60,7 +63,9 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             IValidateTrainingPlanDelete ValidatorTrainingPlanDeleteValidator,
             IValidateTrainingPlanUpdate ValidatorTrainingPlanUpdate,
             IExerciseSessionCommand exerciseSessionCommand,
-            ITrainingSessionCommand trainingSessionCommand)
+            ITrainingSessionCommand trainingSessionCommand,
+            IUserClient userClient,
+            IPlanAsignationClient planAsignation)
 
             
         {
@@ -81,10 +86,14 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             _trainingPlanUpdateValidator = ValidatorTrainingPlanUpdate;
             _exerciseSessionCommand = exerciseSessionCommand;
             _trainingSessionCommand = trainingSessionCommand;
+            _userClient = userClient;
+            _planAsignationClient = planAsignation;
         }
 
         public async Task<TrainingPlanResponse> CreateTrainingPlan(CreateTrainingPlanRequest request)
         {
+            // aca irian las validaciones para el guid del entrenador
+            
             // Validaciones de forma (sin BD)
             await _validator.ValidateCreate(request);
             foreach (var s in request.sesionesEntrenamiento)
@@ -192,11 +201,16 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             return _mapper.ToResponse(plan, sessionResponses);
         }
 
-        public async Task<TrainingPlanStatusResponse>UpdateTrainingPlan(string id,UpdateTrainingPlanRequest request,bool IsAsigned)
+        public async Task<TrainingPlanStatusResponse>UpdateTrainingPlan(string id,UpdateTrainingPlanRequest request)
         {
-            await _trainingPlanUpdateValidator.validate(id, request, IsAsigned);
+           
+            await _trainingPlanUpdateValidator.validate(id, request);
             Guid IdPlan;
             Guid.TryParse(id, out IdPlan);
+
+            if (await _planAsignationClient.response(IdPlan)){
+                throw new ConflictException("No se puede modificar un plan asignado");
+            }
 
             var planToUpdate = _mapper.UpdateToTrainingPlan(IdPlan, request);
             await _command.UpdateTrainingPlan(planToUpdate);
@@ -250,11 +264,16 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             return _mapper.ToStatusResponse((await _query.GetTrainingPlanById(id))!);
         }
 
-        public async Task<TrainingPlanResponse> DeleteTrainingPlan(string id,bool IsUsed)
+        public async Task<TrainingPlanResponse> DeleteTrainingPlan(string id)
         {
+            
             Guid ID;
-            await _trainingPlanDeleteValidator.Validate(id, IsUsed);
+            await _trainingPlanDeleteValidator.Validate(id);
             Guid.TryParse(id, out ID);
+            if (await _planAsignationClient.response(ID))
+            {
+                throw new ConflictException("No se puede modificar un plan asignado");
+            }
             var query = await _query.GetTrainingPlanById(ID);
   
             var sessions = await _trainingSessionQuery.GetTrainingSessionsByPlan(query.Id);

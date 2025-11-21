@@ -1,5 +1,7 @@
+using ConfigRutina.Api.Auth;
 using ConfigRutina.Application.DTOs.Response.Muscle;
 using ConfigRutina.Application.Interfaces.CategoryExcercise;
+using ConfigRutina.Application.Interfaces.Clients;
 using ConfigRutina.Application.Interfaces.Excercise;
 using ConfigRutina.Application.Interfaces.ExcerciseSession;
 using ConfigRutina.Application.Interfaces.ExerciseSession;
@@ -18,6 +20,7 @@ using ConfigRutina.Application.Services.TrainingPlan;
 using ConfigRutina.Application.Services.TrainingSession;
 using ConfigRutina.Application.Validators;
 using ConfigRutina.Domain.Entities;
+using ConfigRutina.Infrastructure.Clients;
 using ConfigRutina.Infrastructure.Commands;
 using ConfigRutina.Infrastructure.Data;
 using ConfigRutina.Infrastructure.Queries;
@@ -113,6 +116,21 @@ builder.Services.AddScoped<IExerciseSessionQuery, ExerciseSessionQuery>();
 builder.Services.AddScoped<IExerciseSessionService, ExerciseSessionService>();
 builder.Services.AddScoped<ExerciseSessionMapper>();
 builder.Services.AddScoped<ExerciseSessionValidator>();
+
+// Preguntar porque se necesita esto para que funcione, lo puse y anda XDDDD
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<TokenPropagationHandler>();
+
+// Configuramos los clientes
+builder.Services.AddHttpClient<IUserClient, UserClient>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Services:UserClientUrl"]);
+}).AddHttpMessageHandler<TokenPropagationHandler>();
+
+builder.Services.AddHttpClient<IPlanAsignationClient, PlanAsignationClient>(client => {
+    client.BaseAddress = new Uri(builder.Configuration["Services:AsignationPlanClientUrl"]);
+
+}).AddHttpMessageHandler<TokenPropagationHandler>();
 
 var app = builder.Build();
 

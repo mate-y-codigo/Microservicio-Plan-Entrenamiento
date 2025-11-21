@@ -161,10 +161,10 @@ namespace ConfigRutina.Api.Controllers
         [ProducesResponseType(typeof(ApiError), 404)]
         [ProducesResponseType(typeof(ApiError), 409)]
 
-        public async Task<IActionResult> DeleteTrainingPlan(string id,bool IsUsed){
+        public async Task<IActionResult> DeleteTrainingPlan(string id){
             try
             {
-                return new JsonResult(await _trainingPlanService.DeleteTrainingPlan(id, IsUsed)) { StatusCode = 200 };
+                return new JsonResult(await _trainingPlanService.DeleteTrainingPlan(id)) { StatusCode = 200 };
             }
             catch (BadRequestException ex)
             {
@@ -194,11 +194,11 @@ namespace ConfigRutina.Api.Controllers
         [ProducesResponseType(typeof(ApiError), 400)]
         [ProducesResponseType(typeof(ApiError), 404)]
         [ProducesResponseType(typeof(ApiError), 409)]
-        public async Task<IActionResult> UpdateTrainingPlan(string id, [FromBody] UpdateTrainingPlanRequest request,bool IsRealised)
+        public async Task<IActionResult> UpdateTrainingPlan(string id, [FromBody] UpdateTrainingPlanRequest request)
         {
             try
             {
-                return new JsonResult(await _trainingPlanService.UpdateTrainingPlan(id, request,IsRealised));
+                return new JsonResult(await _trainingPlanService.UpdateTrainingPlan(id, request));
             }
             catch (BadRequestException ex)
             {
