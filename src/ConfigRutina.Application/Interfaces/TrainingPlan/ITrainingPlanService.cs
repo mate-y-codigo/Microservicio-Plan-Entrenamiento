@@ -12,7 +12,7 @@ namespace ConfigRutina.Application.Interfaces.TrainingPlan
 {
     public interface ITrainingPlanService
     {
-        Task<TrainingPlanResponse> CreateTrainingPlan(CreateTrainingPlanRequest request);
+        Task<TrainingPlanResponse> CreateTrainingPlan(string token,CreateTrainingPlanRequest request);
         Task<TrainingPlanStatusResponse> UpdateTrainingPlan(string id, UpdateTrainingPlanRequest request);
         Task<TrainingPlanResponse> DeleteTrainingPlan(string id);
         Task<TrainingPlanResponse> GetTrainingPlanById(Guid id);

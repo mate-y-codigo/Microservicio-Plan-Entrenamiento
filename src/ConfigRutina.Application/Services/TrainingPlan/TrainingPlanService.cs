@@ -90,10 +90,17 @@ namespace ConfigRutina.Application.Services.TrainingPlan
             _planAsignationClient = planAsignation;
         }
 
-        public async Task<TrainingPlanResponse> CreateTrainingPlan(CreateTrainingPlanRequest request)
+        public async Task<TrainingPlanResponse> CreateTrainingPlan(string token,CreateTrainingPlanRequest request)
         {
-            // aca irian las validaciones para el guid del entrenador
             
+            _userClient.SetAuthToken(token);
+            var usuario = await _userClient.ObtenerUsuario(request.idEntrenador);
+            if (usuario == null)
+                throw new NotFoundException("El entrenador no existe");
+
+            if (usuario.RolId != 2)
+                throw new BadRequestException("El id ingresado no corresponde a un entrenador");
+
             // Validaciones de forma (sin BD)
             await _validator.ValidateCreate(request);
             foreach (var s in request.sesionesEntrenamiento)
@@ -176,6 +183,7 @@ namespace ConfigRutina.Application.Services.TrainingPlan
         public async Task<TrainingPlanResponse> GetTrainingPlanById(Guid id)
         {
             var plan = await _query.GetTrainingPlanById(id);
+
             if (plan is null)
             {
                 throw new NotFoundException("El plan de entrenamiento no existe.");

@@ -117,7 +117,7 @@ builder.Services.AddScoped<IExerciseSessionService, ExerciseSessionService>();
 builder.Services.AddScoped<ExerciseSessionMapper>();
 builder.Services.AddScoped<ExerciseSessionValidator>();
 
-// Preguntar porque se necesita esto para que funcione, lo puse y anda XDDDD
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<TokenPropagationHandler>();
 

@@ -5,6 +5,7 @@ using ConfigRutina.Application.DTOs.Response.Exercise;
 using ConfigRutina.Application.DTOs.Response.TrainingPlan;
 using ConfigRutina.Application.Enums;
 using ConfigRutina.Application.Interfaces.TrainingPlan;
+using MicroservicioAsignacionCalendario.Api.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -30,11 +31,15 @@ namespace ConfigRutina.Api.Controllers
         [ProducesResponseType(typeof(ApiError), 404)]
         [ProducesResponseType(typeof(ApiError), 409)]
 
-        public async Task<IActionResult> CreateTrainingPlan([FromBody] CreateTrainingPlanRequest request)
+        public async Task<IActionResult> CreateTrainingPlan([FromHeader(Name = "Authorization")] string authorizationHeader, [FromBody] CreateTrainingPlanRequest request)
         {
+            var token = Request.ExtraerToken();
+            if (string.IsNullOrEmpty(token))
+                return Unauthorized(new ApiError { message = "Token de autorización ausente o mal formado." });
+
             try
             {
-                var result = await _trainingPlanService.CreateTrainingPlan(request);
+                var result = await _trainingPlanService.CreateTrainingPlan(token,request);
                 return new JsonResult(result) { StatusCode = StatusCodes.Status201Created };
             }
             catch (BadRequestException ex)
