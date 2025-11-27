@@ -44,5 +44,7 @@ namespace ConfigRutina.Infrastructure.Queries
            return await _configRutinaDB.EjercicioSesiones
             .AnyAsync(es => es.IdSesionEntrenamiento == idSesion && es.IdEjercicio == idEjercicio && es.Id == idEjercicioSesion);
         }
+
+        
     }
 }

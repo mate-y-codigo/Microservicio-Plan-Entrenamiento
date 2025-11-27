@@ -25,13 +25,14 @@ namespace ConfigRutina.Application.Mappers
             };
         }
 
-        public TrainingSessionResponse ToResponse(SesionEntrenamiento session, List<ExerciseSessionShortResponse> exerciseSessions) {
+        public TrainingSessionResponse ToResponse(SesionEntrenamiento session, List<ExerciseSessionShortResponse> exerciseSessions)
+        {
             var response = new TrainingSessionResponse
             {
                 id = session.Id,
                 nombre = session.Nombre,
                 orden = session.Orden,
-                sesionesEjercicio= exerciseSessions
+                sesionesEjercicio = exerciseSessions
             };
             return response;
         }
@@ -45,6 +46,18 @@ namespace ConfigRutina.Application.Mappers
                 nombre = session.Nombre,
                 orden = session.Orden,
                 sesionesEjercicio = exerciseSessions
+            };
+            return response;
+        }
+
+        public TrainingSessionResponse ToResponseSinSesiones(SesionEntrenamiento session)
+        {
+            var response = new TrainingSessionResponse
+            {
+                id = session.Id,
+                nombre = session.Nombre,
+                orden = session.Orden
+           
             };
             return response;
         }

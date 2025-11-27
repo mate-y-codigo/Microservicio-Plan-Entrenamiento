@@ -6,9 +6,11 @@ using ConfigRutina.Application.DTOs.Response.TrainingPlan;
 using ConfigRutina.Application.Enums;
 using ConfigRutina.Application.Interfaces.TrainingPlan;
 using MicroservicioAsignacionCalendario.Api.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Security.Claims;
 
 namespace ConfigRutina.Api.Controllers
 {
@@ -25,6 +27,7 @@ namespace ConfigRutina.Api.Controllers
         /// <summary>
         /// Crear plan de entrenamiento
         /// </summary>
+        
         [HttpPost]
         [ProducesResponseType(typeof(TrainingPlanResponse), 201)]
         [ProducesResponseType(typeof(ApiError), 400)]
@@ -34,6 +37,8 @@ namespace ConfigRutina.Api.Controllers
         public async Task<IActionResult> CreateTrainingPlan([FromHeader(Name = "Authorization")] string authorizationHeader, [FromBody] CreateTrainingPlanRequest request)
         {
             var token = Request.ExtraerToken();
+            var rol = User.FindFirst(ClaimTypes.Role)?.Value
+                 ?? User.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
             if (string.IsNullOrEmpty(token))
                 return Unauthorized(new ApiError { message = "Token de autorización ausente o mal formado." });
 

@@ -11,5 +11,6 @@ namespace ConfigRutina.Application.Interfaces.TrainingSession
     {
         Task<SesionEntrenamiento?> GetById(Guid id);
         Task<List<SesionEntrenamiento>> GetTrainingSessionsByPlan(Guid idTP);
+        Task<List<SesionEntrenamiento>> GetAllTrainingSessions();
     }
 }

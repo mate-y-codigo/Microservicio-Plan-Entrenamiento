@@ -13,5 +13,6 @@ namespace ConfigRutina.Application.Interfaces.TrainingSession
     {
         Task<SesionEntrenamiento> CreateAsync(Guid planId, TrainingSessionCreateRequest request);
         Task<TrainingSessionWithPlanResponse> GetTrainingSessionById(Guid id);
+        Task<List<TrainingSessionResponse>> GetAllTrainingSession();
     }
 }

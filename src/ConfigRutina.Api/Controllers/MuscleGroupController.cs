@@ -1,4 +1,5 @@
 ﻿using ConfigRutina.Application.DTOs.Response.Muscle;
+using ConfigRutina.Application.DTOs.Response.MuscleGroup;
 using ConfigRutina.Application.Interfaces.MuscleGroup;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace ConfigRutina.Api.Controllers
         /// Obtener grupos musculares
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(MuscleResponse), 200)]
+        [ProducesResponseType(typeof(MuscleGroupResponse), 200)]
         public async Task<IActionResult> GetAll()
         {
             var result = await _muscleGroupQueryService.GetAll();

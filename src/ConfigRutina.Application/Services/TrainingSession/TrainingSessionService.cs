@@ -1,5 +1,6 @@
 ﻿using ConfigRutina.Application.CustomExceptions;
 using ConfigRutina.Application.DTOs.Request.TrainingSession;
+using ConfigRutina.Application.DTOs.Response.ExerciseSession;
 using ConfigRutina.Application.DTOs.Response.TrainingSession;
 using ConfigRutina.Application.Interfaces.ExcerciseSession;
 using ConfigRutina.Application.Interfaces.ExerciseSession;
@@ -53,6 +54,22 @@ namespace ConfigRutina.Application.Services.TrainingSession
                 }
             }
             return trainingSession;
+        }
+
+        public async Task<List<TrainingSessionResponse>> GetAllTrainingSession()
+        {
+            var query = await _query.GetAllTrainingSessions();
+
+            if (query == null)
+                throw new NotFoundException("No se encontraron sesiones"); 
+            
+            var lista = new List<TrainingSessionResponse>();
+            
+            foreach (var session in query) {
+                lista.Add(_mapper.ToResponseSinSesiones(session));
+            }
+
+            return lista;
         }
 
         public async Task<TrainingSessionWithPlanResponse> GetTrainingSessionById(Guid id)

@@ -25,9 +25,9 @@ namespace ConfigRutina.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(TrainingSessionWithPlanResponse), 200)]
-        [ProducesResponseType(typeof(ApiError),404)]
+        [ProducesResponseType(typeof(ApiError), 404)]
 
-        public async Task<IActionResult> GetTrainingSessionById(Guid id){
+        public async Task<IActionResult> GetTrainingSessionById(Guid id) {
             try
             {
                 var result = await _trainingSessionService.GetTrainingSessionById(id);
@@ -42,5 +42,27 @@ namespace ConfigRutina.Api.Controllers
                 return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
             }
         }
+
+
+        [HttpGet]
+        [ProducesResponseType(typeof(TrainingSessionResponse), 200)]
+        [ProducesResponseType(typeof(ApiError), 404)]
+
+        public async Task<IActionResult> GetAllTrainingSessions() {
+            try {
+                var result = await _trainingSessionService.GetAllTrainingSession();
+                return new JsonResult(result) {StatusCode = StatusCodes.Status200OK };
+            }
+
+            catch (NotFoundException ex)
+            {
+                return NotFound(new ApiError { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiError { message = "Ocurrio un error inesperado." + " " + ex.Message });
+            }
+        }
+
     }
 }

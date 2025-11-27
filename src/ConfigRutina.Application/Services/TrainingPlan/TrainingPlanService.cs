@@ -92,7 +92,7 @@ namespace ConfigRutina.Application.Services.TrainingPlan
 
         public async Task<TrainingPlanResponse> CreateTrainingPlan(string token,CreateTrainingPlanRequest request)
         {
-            
+            // al settear el token estamos pidiendo una autorizacion para crear el plan
             _userClient.SetAuthToken(token);
             var usuario = await _userClient.ObtenerUsuario(request.idEntrenador);
             if (usuario == null)

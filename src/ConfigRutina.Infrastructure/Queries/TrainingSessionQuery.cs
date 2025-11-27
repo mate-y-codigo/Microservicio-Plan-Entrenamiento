@@ -19,6 +19,15 @@ namespace ConfigRutina.Infrastructure.Queries
             _configRutinaDB = configRutinaDB;
         }
 
+        public async Task<List<SesionEntrenamiento>> GetAllTrainingSessions()
+        {
+            return await _configRutinaDB.SesionEntrenamientos
+                 .AsNoTracking()
+                 .Include(ts => ts.PlanEntrenamientoEn)
+                 .ToListAsync();
+                 
+        }
+
         public async Task<SesionEntrenamiento?> GetById(Guid id)
         {
             return await _configRutinaDB.SesionEntrenamientos
