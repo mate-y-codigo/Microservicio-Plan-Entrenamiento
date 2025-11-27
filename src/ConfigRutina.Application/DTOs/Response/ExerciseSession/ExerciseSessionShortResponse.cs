@@ -14,5 +14,6 @@ namespace ConfigRutina.Application.DTOs.Response.ExerciseSession
         public int seriesObjetivo { get; set; }
         public int repeticionesObjetivo { get; set; }
         public float pesoObjetivo { get; set; }
+        public int descanso { get; set; }
     }
 }

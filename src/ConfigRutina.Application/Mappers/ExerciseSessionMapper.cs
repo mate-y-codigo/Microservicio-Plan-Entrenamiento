@@ -87,7 +87,8 @@ namespace ConfigRutina.Application.Mappers
                 nombreEjercicio = sesion.EjercicioEn?.Nombre ?? string.Empty,
                 seriesObjetivo = sesion.SeriesObjetivo,
                 repeticionesObjetivo = sesion.RepeticionesObjetivo,
-                pesoObjetivo = sesion.PesoObjetivo
+                pesoObjetivo = sesion.PesoObjetivo,
+                descanso = sesion.Descanso
             };
         }
     }
